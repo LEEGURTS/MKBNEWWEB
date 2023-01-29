@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.10",
     "framer-motion": "^8.5.4",
     "react": "^18.2.0",
+    "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-fullpage": "^0.1.19",
     "react-router-dom": "^6.8.0",

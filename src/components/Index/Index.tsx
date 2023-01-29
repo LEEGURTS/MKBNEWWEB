@@ -8,7 +8,6 @@ import OneRoofSvg from "../../Icon/Svg/OneRoofSvg";
 import SoundMinSvg from "../../Icon/Svg/SoundMinSvg";
 import SoundMaxSvg from "../../Icon/Svg/SoundMaxSvg";
 import HamburgerBarSvg from "./../../Icon/Svg/HamburgerBarSvg";
-import { Swiper, SwiperSlide } from "swiper/react"; // basic
 import Slider from "./../Slider/Slider";
 
 const Index: React.FunctionComponent = () => {
