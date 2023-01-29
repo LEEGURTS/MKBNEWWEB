@@ -1,0 +1,61 @@
+ const scrollRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const scrollHandler = (e: WheelEvent) => {
+      e.preventDefault();
+      const pageHeight = 100 * vh;
+
+      if (e.deltaY > 0) {
+        window.scrollTo({
+          top: pageHeight * (Math.floor(window.scrollY / pageHeight) + 1) + 1,
+          behavior: "smooth",
+        });
+      } else {
+        window.scrollTo({
+          top: pageHeight * (Math.floor(window.scrollY / pageHeight) - 1),
+          behavior: "smooth",
+        });
+      }
+    };
+
+    let beforeTouch = 0;
+    let touchDelta = 0;
+
+    const touchmoveHandler = (e: TouchEvent) => {
+      e.preventDefault();
+      const pageHeight = 100 * vh;
+      touchDelta += e.touches[0].pageY - beforeTouch;
+      console.log(touchDelta);
+      if (touchDelta > 70) {
+        window.scrollTo({
+          top: pageHeight * (Math.floor(window.scrollY / pageHeight) + 1),
+          behavior: "smooth",
+        });
+      } else {
+        window.scrollTo({
+          top: pageHeight * (Math.floor(window.scrollY / pageHeight) - 1),
+          behavior: "smooth",
+        });
+      }
+      beforeTouch = e.touches[0].pageY;
+    };
+
+    const touchstartHandler = (e: TouchEvent) => {
+      beforeTouch = e.touches[0].pageY;
+      touchDelta = 0;
+    };
+
+    const touchendHandler = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    scrollRef.current?.addEventListener("wheel", scrollHandler);
+    scrollRef.current?.addEventListener("touchstart", touchstartHandler);
+    scrollRef.current?.addEventListener("touchmove", touchmoveHandler);
+    scrollRef.current?.addEventListener("touchend", touchendHandler);
+    return () => {
+      scrollRef.current?.removeEventListener("wheel", scrollHandler);
+      scrollRef.current?.removeEventListener("touchstart", touchstartHandler);
+      scrollRef.current?.removeEventListener("touchmove", touchmoveHandler);
+      scrollRef.current?.removeEventListener("touchend", touchendHandler);
+    };
+  }, [vh]);
