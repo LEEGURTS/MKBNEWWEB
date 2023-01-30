@@ -33,7 +33,7 @@ const SlideBullet: React.FunctionComponent<SlideBulletProps> = ({
             <div
               key={idx}
               className={
-                "duration-300 z-30 rounded-full w-[5px] h-[5px] p-[5px] my-[0.4em] cursor-pointer border hover:bg-white hover:bg-opacity-30 border-white text-white " +
+                "duration-300 z-30 rounded-full w-[5px] h-[5px] p-[5px] my-[0.4em] cursor-pointer border hover:bg-black hover:bg-opacity-50 border-white text-white " +
                 (idx === currentIdx ? "bg-black " : "bg-[#B0B0B0] ")
               }
               onClick={() => setSlidePage(idx)}

@@ -1,23 +1,20 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useVH from "react-viewport-height";
-import THUMBNAILSAMPLE from "../../Icon/Image/THUMBNAILSAMPLE.png";
-import ShuffleSvg from "../../Icon/Svg/ShuffleSvg";
-import PrevPlaySvg from "../../Icon/Svg/PrevPlaySvg";
-import PlaySvg from "../../Icon/Svg/PlaySvg";
-import OneRoofSvg from "../../Icon/Svg/OneRoofSvg";
-import SoundMinSvg from "../../Icon/Svg/SoundMinSvg";
-import SoundMaxSvg from "../../Icon/Svg/SoundMaxSvg";
-import HamburgerBarSvg from "./../../Icon/Svg/HamburgerBarSvg";
 import Slider from "./../Slider/Slider";
+import { motion } from "framer-motion";
+import Navigate from "../Navigate/Navigate";
+import MusicPlayer from "./../MusicPlay/MusicPlayer";
 
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
-  useEffect(() => {});
+
   const indexSlideList = [
-    <div
+    <motion.div
       key={1}
-      className="relative w-screen flex items-center justify-center"
+      className="relative z-10 w-screen flex items-center justify-center"
       style={{ height: 100 * vh }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
       <div className="flex flex-col items-center">
         <p className="text-bold text-[2.4em]">M</p>
@@ -27,7 +24,7 @@ const Index: React.FunctionComponent = () => {
         <p>ⒸMKB MUSIC 2023 All Rights Reserved.</p>
         <p> DO NOT COPY WITHOUT PERMISSION</p>
       </div>
-    </div>,
+    </motion.div>,
     <div
       key={2}
       className="relative w-screen flex flex-col items-center justify-center"
@@ -65,41 +62,13 @@ const Index: React.FunctionComponent = () => {
       className="relative w-screen flex flex-col items-center justify-center"
       style={{ height: 100 * vh }}
     >
-      <div className="flex flex-col items-center w-[60vw] lg:w-[30vw]">
-        <div className="w-full">
-          <img alt="" src={THUMBNAILSAMPLE} className="w-full" />
-          <p className="text-[0.6em]">Untitled</p>
-          <p className="text-[0.4em] text-[#4a4a4a]">MKB DANCE MUSIC</p>
-        </div>
-        <div className="flex justify-between mt-[1em] w-full border-t border-[1.5px] border-[#909090]"></div>
-        <div className="w-full flex flex-row justify-between text-[0.6em]">
-          <p>0:00</p>
-          <p>3:52</p>
-        </div>
-        <div className="w-[calc(100%+40px)] my-[2em] flex flex-row items-center justify-between">
-          <ShuffleSvg />
-          <div className="flex items-center w-[40%] lg:w-[30%] justify-between">
-            <PrevPlaySvg />
-            <PlaySvg />
-            <PrevPlaySvg isRotate={true} />
-          </div>
-          <OneRoofSvg />
-        </div>
-        <div className="w-[calc(100%+60px)] flex flex-row items-center justify-between">
-          <SoundMinSvg />
-          <div className="flex-grow border border-[#6d6c6c]"></div>
-          <SoundMaxSvg />
-        </div>
-      </div>
+      <MusicPlayer url="https://dl246.dlmate19.online/?file=M3R4SUNiN3JsOHJ6WWQ2a3NQS1Y5ZGlxVlZIOCtyZ0tuY0lRd2hFdEV1QUpnNjlxajczbEFaMEtDNFJLN04zblNZb1IwQjJkS2ZIT0VWdkNrcEV5Vm56SzJOQTdzRHpHOG9KcmRQODZSUi84bnEyQzJEeG0ya0h6ZDlUSUtxaFhlWDhtNWhKRnlpbUcyT1RXdkZDcWxYQzk5QWpSU2lKUDRCMGJEc0RKOWFodHhFTGNTcm5wdzhORHFpT1F2N0Y3blBXRnBBamt4cVkzdGRrb0R4SWpKc0VNaThpa2hyYmZyRjBjM2N4UGd4bncrclRnRllob0dLZkg%3D" />
     </div>,
   ];
 
   return (
     <div className="relative">
-      <div className="w-full fixed flex items-center justify-between p-[1.5em]">
-        <p>M</p>
-        <HamburgerBarSvg />
-      </div>
+      <Navigate />
       <Slider
         paginateVisible={true}
         isVerticalSlide={true}

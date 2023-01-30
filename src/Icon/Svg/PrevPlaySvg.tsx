@@ -2,10 +2,12 @@ import React from "react";
 
 interface PrevPlaySvgProps {
   isRotate?: boolean;
+  onClick: () => void;
 }
 
 const PrevPlaySvg: React.FunctionComponent<PrevPlaySvgProps> = ({
   isRotate = false,
+  onClick,
 }) => {
   return (
     <svg
@@ -17,6 +19,7 @@ const PrevPlaySvg: React.FunctionComponent<PrevPlaySvgProps> = ({
       style={{
         rotate: isRotate ? "180" : "0",
       }}
+      onClick={onClick}
     >
       <path
         d="M18 17L8 9L18 1V17Z"
