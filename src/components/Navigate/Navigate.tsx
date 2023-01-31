@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import HamburgerBarSvg from "./../../Icon/Svg/HamburgerBarSvg";
 import { NavigateState } from "./NavigateState/NAVIGATESTATE";
 import NavigateNone from "./NavigateState/NavigateNone";
