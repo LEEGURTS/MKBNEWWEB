@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import THUMBNAILSAMPLE from "../../Icon/Image/THUMBNAILSAMPLE.png";
 import ShuffleSvg from "../../Icon/Svg/ShuffleSvg";
 import PrevPlaySvg from "../../Icon/Svg/PrevPlaySvg";
 import PlaySvg from "../../Icon/Svg/PlaySvg";
@@ -7,12 +6,22 @@ import OneRoofSvg from "../../Icon/Svg/OneRoofSvg";
 import SoundMinSvg from "../../Icon/Svg/SoundMinSvg";
 import SoundMaxSvg from "../../Icon/Svg/SoundMaxSvg";
 import styled from "styled-components";
+import MusicListSvg from "../../Icon/Svg/MusicListSvg";
+import { WorkState } from "../Work/WORKSTATE";
 
 interface MusicPlayerProps {
+  thumbnail: string;
   url: string;
+  setWorkState: React.Dispatch<React.SetStateAction<WorkState>>;
+  musicListVisible?: boolean;
 }
 
-const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({ url }) => {
+const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
+  url,
+  thumbnail,
+  setWorkState,
+  musicListVisible = true,
+}) => {
   const [musicPlaying, setMusicPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [, setMusicVolume] = useState<number>(1);
@@ -68,10 +77,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({ url }) => {
 `;
   return (
     <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
-      <div className="w-full">
-        <img alt="" src={THUMBNAILSAMPLE} className="w-full" />
-        <p className="text-[0.6em]">Untitled</p>
-        <p className="text-[0.4em] text-[#4a4a4a]">MKB DANCE MUSIC</p>
+      <img alt="" src={thumbnail} className="w-full" />
+      <div className="w-full flex flex-row justify-between items-end mt-[1em]">
+        <div className="flex flex-col">
+          <p className="text-[0.6em]">Untitled</p>
+          <p className="text-[0.4em] text-[#4a4a4a]">MKB DANCE MUSIC</p>
+        </div>
+        {musicListVisible && (
+          <MusicListSvg onClick={() => setWorkState(WorkState.MUSICLIST)} />
+        )}
       </div>
       <VolumeControl>
         <input
@@ -91,9 +105,13 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({ url }) => {
         <ShuffleSvg />
         <div className="flex items-center w-[40%] lg:w-[30%] justify-between">
           <PrevPlaySvg onClick={() => audio.current.play()} />
-          {musicPlaying && <p onClick={() => musicPause()}>ll</p>}
+          {musicPlaying && (
+            <p className="" onClick={() => musicPause()}>
+              ll
+            </p>
+          )}
           {!musicPlaying && <PlaySvg onClick={() => musicStart()} />}
-          <PrevPlaySvg onClick={() => audio.current.pause()} />
+          <PrevPlaySvg isRotate={true} onClick={() => audio.current.pause()} />
         </div>
         <OneRoofSvg />
       </div>

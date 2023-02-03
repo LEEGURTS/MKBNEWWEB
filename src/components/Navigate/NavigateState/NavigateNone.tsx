@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { NavigateState } from "./NAVIGATESTATE";
 
 interface NavigateNoneProps {
@@ -8,23 +9,26 @@ interface NavigateNoneProps {
 const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
   setNavigateState,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="relative top-[35%] flex flex-col items-center">
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => setNavigateState(NavigateState.WORK)}
+        onClick={() => {
+          setNavigateState(NavigateState.WORK);
+        }}
       >
         WORK
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => setNavigateState(NavigateState.PRESONAL)}
+        onClick={() => navigate("personalwork")}
       >
-        PERSONAL WALK
+        PERSONAL WOLK
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => setNavigateState(NavigateState.ABOUTMKB)}
+        onClick={() => navigate("aboutmkb")}
       >
         ABOUT MKB
       </p>
@@ -36,7 +40,7 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => setNavigateState(NavigateState.CONTACT)}
+        onClick={() => navigate("contact")}
       >
         CONTACT
       </p>

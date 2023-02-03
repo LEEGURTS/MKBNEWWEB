@@ -17,7 +17,7 @@ const PrevPlaySvg: React.FunctionComponent<PrevPlaySvgProps> = ({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{
-        rotate: isRotate ? "180" : "0",
+        transform: isRotate ? "rotate(180deg)" : "",
       }}
       onClick={onClick}
     >

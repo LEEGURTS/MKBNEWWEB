@@ -2,11 +2,7 @@ import React from "react";
 import Index from "../components/Index/Index";
 
 const IndexPage: React.FunctionComponent = () => {
-  return (
-    <div>
-      <Index />
-    </div>
-  );
+  return <Index />;
 };
 
 export default IndexPage;

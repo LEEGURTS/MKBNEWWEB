@@ -3,7 +3,8 @@ import useVH from "react-viewport-height";
 import Slider from "./../Slider/Slider";
 import { motion } from "framer-motion";
 import Navigate from "../Navigate/Navigate";
-import MusicPlayer from "./../MusicPlay/MusicPlayer";
+import MusicPlayer from "../MusicPlay/MusicPlayer";
+import THUMBNAILSAMPLE from "../../Icon/Image/THUMBNAILSAMPLE.png";
 
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
@@ -62,7 +63,12 @@ const Index: React.FunctionComponent = () => {
       className="relative w-screen flex flex-col items-center justify-center"
       style={{ height: 100 * vh }}
     >
-      <MusicPlayer url="https://dl246.dlmate19.online/?file=M3R4SUNiN3JsOHJ6WWQ2a3NQS1Y5ZGlxVlZIOCtyZ0tuY0lRd2hFdEV1QUpnNjlxajczbEFaMEtDNFJLN04zblNZb1IwQjJkS2ZIT0VWdkNrcEV5Vm56SzJOQTdzRHpHOG9KcmRQODZSUi84bnEyQzJEeG0ya0h6ZDlUSUtxaFhlWDhtNWhKRnlpbUcyT1RXdkZDcWxYQzk5QWpSU2lKUDRCMGJEc0RKOWFodHhFTGNTcm5wdzhORHFpT1F2N0Y3blBXRnBBamt4cVkzdGRrb0R4SWpKc0VNaThpa2hyYmZyRjBjM2N4UGd4bncrclRnRllob0dLZkg%3D" />
+      <MusicPlayer
+        musicListVisible={false}
+        thumbnail={THUMBNAILSAMPLE}
+        url=""
+        setWorkState={() => {}}
+      />
     </div>,
   ];
 
