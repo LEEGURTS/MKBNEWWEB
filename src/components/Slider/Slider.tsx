@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import "swiper/swiper-bundle.min.css";
+import "swiper/swiper.min.css";
 import SwiperCore, { Mousewheel, Autoplay } from "swiper";
 import SlideBullet from "./SlideBullet";
 import { isMobile } from "react-device-detect";
@@ -16,6 +17,7 @@ interface SliderProps {
   autoPlay?: {};
   mouseScroll?: boolean;
   setCurrentIdx?: React.Dispatch<React.SetStateAction<number>>;
+  style?: React.CSSProperties;
 }
 
 SwiperCore.use([Mousewheel, Autoplay]);
@@ -31,6 +33,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   bulletVisible = true,
   paginateVisible = true,
   setCurrentIdx = () => {},
+  style,
 }) => {
   const [swiper, setSwiper] = useState<SwiperCore>();
   const [slideIdx, setSlideIdx] = useState(currentIdx);
@@ -62,9 +65,6 @@ const Slider: React.FunctionComponent<SliderProps> = ({
         lazy={{
           loadPrevNext: true,
         }}
-        style={{
-          alignItems: "center",
-        }}
         direction={isVerticalSlide ? "vertical" : "horizontal"}
         mousewheel={
           mouseScroll
@@ -73,6 +73,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
               }
             : false
         }
+        style={style}
         centeredSlides={true}
       >
         {children.map((item, idx) => {

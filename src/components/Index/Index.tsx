@@ -48,7 +48,7 @@ const Index: React.FunctionComponent = () => {
       ]);
     }
   }, []);
-  console.log(wholeMusicList);
+
   const indexSlideList = [
     <motion.div
       key={1}
@@ -117,7 +117,9 @@ const Index: React.FunctionComponent = () => {
       <Slider
         paginateVisible={true}
         isVerticalSlide={true}
-        SwiperClassName="h-[100vh]"
+        style={{
+          height: 100 * vh,
+        }}
         SlideClassName="mb-0"
       >
         {indexSlideList}

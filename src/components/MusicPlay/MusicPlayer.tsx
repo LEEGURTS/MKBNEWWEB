@@ -12,6 +12,7 @@ import { MusicExplainSvg } from "../../Icon/Svg/MusicExplainSvg";
 import { musicForm } from "../MusicList/MusicList";
 import Slider from "../Slider/Slider";
 import WorkExplain from "./WorkExplain";
+import useVH from "react-viewport-height";
 
 const VolumeControl = styled.div`
 display: flex;
@@ -64,7 +65,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const [playIdx, setPlayIdx] = useState(customPlayIdx);
   const audio = useRef<HTMLAudioElement>(new Audio(musicList[0].url));
   const [slideIdx, setSlideIdx] = useState(0);
-
+  const vh = useVH();
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
     setPlayIdx(0);
@@ -126,7 +127,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
     <Slider
       currentIdx={slideIdx}
       setCurrentIdx={setSlideIdx}
-      SwiperClassName="w-screen h-full"
+      SwiperClassName="w-screen"
       SlideClassName="flex items-center justify-center"
       bulletVisible={false}
       mouseScroll={false}
