@@ -65,7 +65,6 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const [playIdx, setPlayIdx] = useState(customPlayIdx);
   const audio = useRef<HTMLAudioElement>(new Audio(musicList[0].url));
   const [slideIdx, setSlideIdx] = useState(0);
-  const vh = useVH();
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
     setPlayIdx(0);
