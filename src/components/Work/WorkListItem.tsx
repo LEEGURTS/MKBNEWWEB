@@ -12,11 +12,11 @@ const WorkListItem: React.FunctionComponent<WorkListItemProps> = ({
   return (
     <div className="flex flex-col items-center" onClick={onClick}>
       <img
-        className="w-[30vw] h-[30vw] sm:w-[22vw] sm:h-[22vw] lg:w-[20vw] lg:h-[20vw] object-cover"
+        className="w-[40vw] h-[40vw] sm:w-[22vw] sm:h-[22vw] lg:w-[20vw] lg:h-[20vw] object-cover"
         alt=""
         src={thumbnail}
       />
-      <p className="mt-[1em]">{title}</p>
+      <p className="mt-[1em] text-[0.6em]">{title}</p>
     </div>
   );
 };

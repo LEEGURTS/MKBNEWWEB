@@ -1,13 +1,19 @@
 import React from "react";
 
-const ShuffleSvg: React.FunctionComponent = () => {
+interface ShuffleSvgProps {
+  onClick?: () => void;
+}
+
+const ShuffleSvg: React.FunctionComponent<ShuffleSvgProps> = ({ onClick }) => {
   return (
     <svg
+      onClick={onClick}
       width="19"
       height="19"
       viewBox="0 0 19 19"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="cursor-pointer"
     >
       <path
         d="M2.375 14.2341L4.39374 14.2421C5.11416 14.2421 5.78708 13.8858 6.18291 13.292L11.2417 5.70792C11.6375 5.11417 12.3104 4.74999 13.0308 4.75791L16.6329 4.77376"

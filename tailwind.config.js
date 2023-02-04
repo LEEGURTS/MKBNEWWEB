@@ -6,6 +6,9 @@ module.exports = {
       fontFamily: {
         "lexend-exa": ["Lexend Exa"],
       },
+      boxShadow: {
+        "3xl": "0px 0px 2px 2px  rgba(232, 232, 232, 1)",
+      },
     },
     screens: {
       sc3: "300px",

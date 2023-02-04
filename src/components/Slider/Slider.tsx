@@ -14,6 +14,7 @@ interface SliderProps {
   paginateVisible?: boolean;
   currentIdx?: number;
   autoPlay?: {};
+  mouseScroll?: boolean;
   setCurrentIdx?: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -23,6 +24,8 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   children,
   SwiperClassName,
   SlideClassName,
+  mouseScroll = true,
+  currentIdx = 0,
   autoPlay = false,
   isVerticalSlide = false,
   bulletVisible = true,
@@ -30,17 +33,17 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   setCurrentIdx = () => {},
 }) => {
   const [swiper, setSwiper] = useState<SwiperCore>();
-  const [slideIdx, setSlideIdx] = useState(0);
-
+  const [slideIdx, setSlideIdx] = useState(currentIdx);
   const handleIndex = (selectedIdx: number) => {
     swiper?.slideTo(selectedIdx);
     setCurrentIdx(selectedIdx);
   };
 
   useEffect(() => {
-    return setCurrentIdx(0);
-    // eslint-disable-next-line
-  }, []);
+    setSlideIdx(currentIdx);
+    swiper?.slideTo(currentIdx);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIdx]);
 
   return (
     <>
@@ -63,9 +66,13 @@ const Slider: React.FunctionComponent<SliderProps> = ({
           alignItems: "center",
         }}
         direction={isVerticalSlide ? "vertical" : "horizontal"}
-        mousewheel={{
-          forceToAxis: false,
-        }}
+        mousewheel={
+          mouseScroll
+            ? {
+                forceToAxis: false,
+              }
+            : false
+        }
         centeredSlides={true}
       >
         {children.map((item, idx) => {

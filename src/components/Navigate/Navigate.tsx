@@ -4,6 +4,7 @@ import HamburgerBarSvg from "./../../Icon/Svg/HamburgerBarSvg";
 import { NavigateState } from "./NavigateState/NAVIGATESTATE";
 import NavigateNone from "./NavigateState/NavigateNone";
 import NavigateWork from "./NavigateState/NavigateWork";
+import CloseSvg from "./../../Icon/Svg/CloseSvg";
 
 const Navigate: React.FunctionComponent = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
@@ -29,14 +30,17 @@ const Navigate: React.FunctionComponent = () => {
         className="w-full fixed z-50 flex flex-row items-center justify-between p-8"
       >
         <p className={isNavVisible ? "text-white" : "text-black"}>M</p>
-        <HamburgerBarSvg
-          className="cursor-pointer "
-          fill={isNavVisible ? "white" : "black"}
-          onClick={() => {
-            setIsNavVisible(!isNavVisible);
-            setNavigateState(NavigateState.NONE);
-          }}
-        />
+        {!isNavVisible && (
+          <HamburgerBarSvg
+            className="cursor-pointer "
+            fill="black"
+            onClick={() => {
+              setIsNavVisible(true);
+              setNavigateState(NavigateState.NONE);
+            }}
+          />
+        )}
+        {isNavVisible && <CloseSvg onClick={() => setIsNavVisible(false)} />}
       </motion.div>
       {isNavVisible && (
         <motion.div

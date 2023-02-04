@@ -1,14 +1,54 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import useVH from "react-viewport-height";
 import Slider from "./../Slider/Slider";
 import { motion } from "framer-motion";
 import Navigate from "../Navigate/Navigate";
 import MusicPlayer from "../MusicPlay/MusicPlayer";
-import THUMBNAILSAMPLE from "../../Icon/Image/THUMBNAILSAMPLE.png";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "../../Firebase";
+import { musicForm } from "./../MusicList/MusicList";
 
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
+  const [wholeMusicList, setWholeMusicList] = useState<musicForm[]>([
+    { title: "", url: "", thumbnail: "", explain: "" },
+  ]);
+  const syncMusicList = useRef<musicForm[]>([]);
+  const getFirebaseData = async (path: string) => {
+    const modernDanceCollection = collection(db, path);
+    const data = await getDocs(modernDanceCollection);
+    const albumData = data.docs.map((doc) => ({ ...doc.data() }));
+    sessionStorage.setItem(path, JSON.stringify(albumData as musicForm[]));
+    return albumData as musicForm[];
+  };
 
+  useEffect(() => {
+    if (!JSON.parse(sessionStorage.getItem("moderndance") as string)) {
+      getFirebaseData("moderndance").then((item) => {
+        syncMusicList.current.push(...item);
+        setWholeMusicList(syncMusicList.current);
+      });
+    }
+    if (!JSON.parse(sessionStorage.getItem("koreadance") as string)) {
+      getFirebaseData("koreadance").then((item) => {
+        syncMusicList.current.push(...item);
+        setWholeMusicList(syncMusicList.current);
+      });
+    }
+    if (!JSON.parse(sessionStorage.getItem("ballet") as string)) {
+      getFirebaseData("ballet").then((item) => {
+        syncMusicList.current.push(...item);
+        setWholeMusicList(syncMusicList.current);
+      });
+    } else {
+      setWholeMusicList([
+        ...JSON.parse(sessionStorage.getItem("moderndance") as string),
+        ...JSON.parse(sessionStorage.getItem("koreadance") as string),
+        ...JSON.parse(sessionStorage.getItem("ballet") as string),
+      ]);
+    }
+  }, []);
+  console.log(wholeMusicList);
   const indexSlideList = [
     <motion.div
       key={1}
@@ -65,9 +105,8 @@ const Index: React.FunctionComponent = () => {
     >
       <MusicPlayer
         musicListVisible={false}
-        thumbnail={THUMBNAILSAMPLE}
-        url=""
         setWorkState={() => {}}
+        musicList={wholeMusicList}
       />
     </div>,
   ];

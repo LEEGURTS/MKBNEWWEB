@@ -3,10 +3,10 @@ import useVH from "react-viewport-height";
 import MusicPlayer from "../MusicPlay/MusicPlayer";
 import { useState } from "react";
 import { WorkState } from "./WORKSTATE";
-import WorkExplain from "./WorkExplain";
 import WorkList from "./WorkList";
 import ReturnSvg from "./../../Icon/Svg/ReturnSvg";
-import React from "react";
+import React, { useMemo } from "react";
+
 interface WorkProps {
   titlePath: string;
 }
@@ -14,10 +14,25 @@ interface WorkProps {
 const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   const vh = useVH();
   const [workState, setWorkState] = useState<WorkState>(WorkState.MUSICPLAY);
-  const [musicState, setMusicState] = useState<{
-    thumbnail: string;
-    url: string;
-  }>({ thumbnail: "", url: "" });
+  const [modernDanceList, koreaDanceList, balletList] = [
+    JSON.parse(sessionStorage.getItem("moderndance") as string),
+    JSON.parse(sessionStorage.getItem("koreadance") as string),
+    JSON.parse(sessionStorage.getItem("ballet") as string),
+  ];
+  const [playIdx, setPlayIdx] = useState(0);
+  const musicDataList = useMemo(() => {
+    switch (titlePath) {
+      case "MODERN DANCE":
+        return modernDanceList;
+      case "KOREA DANCE":
+        return koreaDanceList;
+      case "balletList":
+        return balletList;
+      default:
+        return [{ title: "", url: "", explain: "", thumbnail: "" }];
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <motion.div
@@ -46,7 +61,8 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
             >
               <WorkList
                 setWorkState={setWorkState}
-                setMusicState={setMusicState}
+                setMusicState={setPlayIdx}
+                musicList={musicDataList}
               />
             </motion.div>
           )}
@@ -57,19 +73,10 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
               animate={{ opacity: 1 }}
             >
               <MusicPlayer
-                url={musicState.url}
-                thumbnail={musicState.thumbnail}
+                customPlayIdx={playIdx}
+                musicList={musicDataList}
                 setWorkState={setWorkState}
               />
-            </motion.div>
-          )}
-          {workState === WorkState.EXPLAIN && (
-            <motion.div
-              key={"musicplay"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <WorkExplain />
             </motion.div>
           )}
         </AnimatePresence>
