@@ -12,7 +12,7 @@ import { MusicExplainSvg } from "../../Icon/Svg/MusicExplainSvg";
 import { musicForm } from "../MusicList/MusicList";
 import Slider from "../Slider/Slider";
 import WorkExplain from "./WorkExplain";
-import useVH from "react-viewport-height";
+import PauseSvg from "../../Icon/Svg/PauseSvg";
 
 const VolumeControl = styled.div`
 display: flex;
@@ -126,7 +126,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
     <Slider
       currentIdx={slideIdx}
       setCurrentIdx={setSlideIdx}
-      SwiperClassName="w-screen"
+      SwiperClassName="w-screen h-full"
       SlideClassName="flex items-center justify-center"
       bulletVisible={false}
       mouseScroll={false}
@@ -146,7 +146,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
 
             <MusicExplainSvg
               className="relative top-[2px] ml-[0.3em] "
-              onClick={() => setSlideIdx(1)}
+              onClick={() => setSlideIdx(slideIdx + 1)}
             />
           </div>
         </div>
@@ -171,14 +171,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
               <PrevPlaySvg onClick={() => decreasePlayIdx()} />
             </div>
             {musicPlaying && (
-              <p
-                className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300"
-                onClick={() => musicPause()}
-              >
-                ll
-              </p>
+              <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
+                <PauseSvg onClick={() => musicPause()} />
+              </div>
             )}
-            {!musicPlaying && <PlaySvg onClick={() => musicStart()} />}
+            {!musicPlaying && (
+              <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
+                <PlaySvg onClick={() => musicStart()} />
+              </div>
+            )}
             <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
               <PrevPlaySvg isRotate={true} onClick={() => increasePlayIdx()} />
             </div>

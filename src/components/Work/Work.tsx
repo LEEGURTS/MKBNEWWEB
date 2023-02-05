@@ -14,26 +14,30 @@ interface WorkProps {
 const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   const vh = useVH();
   const [workState, setWorkState] = useState<WorkState>(WorkState.MUSICPLAY);
-  const [modernDanceList, koreaDanceList, balletList] = [
+  const [modernDanceList, koreaDanceList, balletList, personalWorkList] = [
     JSON.parse(sessionStorage.getItem("moderndance") as string),
     JSON.parse(sessionStorage.getItem("koreadance") as string),
     JSON.parse(sessionStorage.getItem("ballet") as string),
+    JSON.parse(sessionStorage.getItem("personalwork") as string),
   ];
   const [playIdx, setPlayIdx] = useState(0);
+
   const musicDataList = useMemo(() => {
     switch (titlePath) {
       case "MODERN DANCE":
         return modernDanceList;
       case "KOREA DANCE":
         return koreaDanceList;
-      case "balletList":
+      case "BALLET":
         return balletList;
+      case "PERSONAL WORK":
+        return personalWorkList;
       default:
         return [{ title: "", url: "", explain: "", thumbnail: "" }];
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(musicDataList);
   return (
     <motion.div
       className="w-screen bg-[#D9D9D9] flex flex-col items-center"

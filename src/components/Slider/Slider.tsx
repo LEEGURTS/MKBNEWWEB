@@ -39,7 +39,6 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   const [slideIdx, setSlideIdx] = useState(currentIdx);
   const handleIndex = (selectedIdx: number) => {
     swiper?.slideTo(selectedIdx);
-    setCurrentIdx(selectedIdx);
   };
 
   useEffect(() => {
@@ -53,6 +52,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
       <Swiper
         onSwiper={setSwiper}
         autoplay={autoPlay}
+        spaceBetween={150}
         onRealIndexChange={(e) => {
           setSlideIdx(e.realIndex);
           setCurrentIdx(e.realIndex);

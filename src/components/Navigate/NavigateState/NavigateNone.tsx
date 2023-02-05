@@ -22,13 +22,13 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("personalwork")}
+        onClick={() => navigate("/personalwork")}
       >
         PERSONAL WOLK
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("aboutmkb")}
+        onClick={() => navigate("/aboutmkb")}
       >
         ABOUT MKB
       </p>
@@ -40,7 +40,7 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("contact")}
+        onClick={() => navigate("/contact")}
       >
         CONTACT
       </p>

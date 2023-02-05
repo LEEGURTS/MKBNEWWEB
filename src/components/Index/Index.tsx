@@ -7,6 +7,10 @@ import MusicPlayer from "../MusicPlay/MusicPlayer";
 import { collection, getDocs } from "@firebase/firestore";
 import { db } from "../../Firebase";
 import { musicForm } from "./../MusicList/MusicList";
+import BGSLIDE1 from "../../Icon/Image/Background/BGSLIDE1.jpg";
+import BGSLIDE2 from "../../Icon/Image/Background/BGSLIDE2.jpg";
+import BGSLIDE3 from "../../Icon/Image/Background/BGSLIDE3.jpg";
+import BGSLIDE4 from "../../Icon/Image/Background/BGSLIDE4.jpg";
 
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
@@ -40,11 +44,18 @@ const Index: React.FunctionComponent = () => {
         syncMusicList.current.push(...item);
         setWholeMusicList(syncMusicList.current);
       });
+    }
+    if (!JSON.parse(sessionStorage.getItem("personalwork") as string)) {
+      getFirebaseData("personalwork").then((item) => {
+        syncMusicList.current.push(...item);
+        setWholeMusicList(syncMusicList.current);
+      });
     } else {
       setWholeMusicList([
         ...JSON.parse(sessionStorage.getItem("moderndance") as string),
         ...JSON.parse(sessionStorage.getItem("koreadance") as string),
         ...JSON.parse(sessionStorage.getItem("ballet") as string),
+        ...JSON.parse(sessionStorage.getItem("personalwork") as string),
       ]);
     }
   }, []);
@@ -53,7 +64,12 @@ const Index: React.FunctionComponent = () => {
     <motion.div
       key={1}
       className="relative z-10 w-screen flex items-center justify-center"
-      style={{ height: 100 * vh }}
+      style={{
+        height: 100 * vh,
+        backgroundImage: `url(${BGSLIDE1})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
@@ -69,7 +85,12 @@ const Index: React.FunctionComponent = () => {
     <div
       key={2}
       className="relative w-screen flex flex-col items-center justify-center"
-      style={{ height: 100 * vh }}
+      style={{
+        height: 100 * vh,
+        backgroundImage: `url(${BGSLIDE2})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
       <div className="flex flex-col items-center leading-8">
         <p className="font-bold text-[1.8em]">MUSIC</p>
@@ -84,7 +105,12 @@ const Index: React.FunctionComponent = () => {
     <div
       key={3}
       className="relative w-screen flex flex-col items-center justify-center"
-      style={{ height: 100 * vh }}
+      style={{
+        height: 100 * vh,
+        backgroundImage: `url(${BGSLIDE3})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
       <div className="flex flex-col items-center leading-8">
         <p className="font-bold text-[1.8em]">MUSIC</p>
@@ -101,7 +127,12 @@ const Index: React.FunctionComponent = () => {
     <div
       key={4}
       className="relative w-screen flex flex-col items-center justify-center"
-      style={{ height: 100 * vh }}
+      style={{
+        height: 100 * vh,
+        backgroundImage: `url(${BGSLIDE4})`,
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
     >
       <MusicPlayer
         musicListVisible={false}

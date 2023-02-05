@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         "lexend-exa": ["Lexend Exa"],
+        "comic-sans": ["Comic Sans MS", "Comic Sans"],
+        suit: ["SUIT-Regular"],
       },
       boxShadow: {
         "3xl": "0px 0px 2px 2px  rgba(232, 232, 232, 1)",
