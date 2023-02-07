@@ -11,7 +11,7 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <div className="relative top-[35%] flex flex-col items-center">
+    <div className="absolute top-[50%] flex flex-col items-center">
       <p
         className="my-[0.75em] cursor-pointer"
         onClick={() => {

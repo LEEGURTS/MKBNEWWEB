@@ -5,6 +5,7 @@ import { NavigateState } from "./NavigateState/NAVIGATESTATE";
 import NavigateNone from "./NavigateState/NavigateNone";
 import NavigateWork from "./NavigateState/NavigateWork";
 import CloseSvg from "./../../Icon/Svg/CloseSvg";
+import { MKBLogoSvg } from "./../../Icon/Svg/MKBLogoSvg";
 
 const Navigate: React.FunctionComponent = () => {
   const [isNavVisible, setIsNavVisible] = useState(false);
@@ -29,7 +30,11 @@ const Navigate: React.FunctionComponent = () => {
         key={"header"}
         className="w-full fixed z-50 flex flex-row items-center justify-between p-8"
       >
-        <p className={isNavVisible ? "text-white" : "text-black"}>M</p>
+        <MKBLogoSvg
+          width="2em"
+          height="2em"
+          fill={isNavVisible ? "white" : "black"}
+        />
         {!isNavVisible && (
           <HamburgerBarSvg
             className="cursor-pointer "
@@ -57,7 +62,7 @@ const Navigate: React.FunctionComponent = () => {
           }}
         >
           <div className="relative top-[18%] flex flex-col items-center">
-            <p className="text-[3em]">M</p>
+            <MKBLogoSvg fill="white" />
             <p className="">MKB DANCE MUSIC</p>
             <p className="text-[0.55em]">MUSIC COMPANY</p>
           </div>

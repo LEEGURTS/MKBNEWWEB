@@ -13,11 +13,14 @@ interface SliderProps {
   isVerticalSlide?: boolean;
   bulletVisible?: boolean;
   paginateVisible?: boolean;
-  currentIdx?: number;
+  controlIdx?: number;
+  infoIdx?: number;
   autoPlay?: {};
   mouseScroll?: boolean;
-  setCurrentIdx?: React.Dispatch<React.SetStateAction<number>>;
+  setControlIdx?: React.Dispatch<React.SetStateAction<number>>;
+  setInfoIdx?: React.Dispatch<React.SetStateAction<number>>;
   style?: React.CSSProperties;
+  spaceBetween?: number;
 }
 
 SwiperCore.use([Mousewheel, Autoplay]);
@@ -27,35 +30,41 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   SwiperClassName,
   SlideClassName,
   mouseScroll = true,
-  currentIdx = 0,
+  controlIdx = 0,
+  infoIdx = 0,
   autoPlay = false,
   isVerticalSlide = false,
   bulletVisible = true,
   paginateVisible = true,
-  setCurrentIdx = () => {},
+  setControlIdx = () => {},
+  setInfoIdx = () => {},
   style,
+  spaceBetween = 0,
 }) => {
   const [swiper, setSwiper] = useState<SwiperCore>();
-  const [slideIdx, setSlideIdx] = useState(currentIdx);
+  const [slideIdx, setSlideIdx] = useState(controlIdx);
   const handleIndex = (selectedIdx: number) => {
     swiper?.slideTo(selectedIdx);
   };
 
   useEffect(() => {
-    setSlideIdx(currentIdx);
-    swiper?.slideTo(currentIdx);
+    setSlideIdx(controlIdx);
+    setInfoIdx(controlIdx);
+    swiper?.slideTo(controlIdx);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIdx]);
+  }, [controlIdx]);
 
   return (
     <>
       <Swiper
+        allowTouchMove={false}
+        touchRatio={0}
         onSwiper={setSwiper}
         autoplay={autoPlay}
-        spaceBetween={150}
+        spaceBetween={spaceBetween}
         onRealIndexChange={(e) => {
           setSlideIdx(e.realIndex);
-          setCurrentIdx(e.realIndex);
+          setInfoIdx(e.realIndex);
         }}
         cssMode={isMobile ? true : false}
         modules={[Mousewheel, Autoplay]}

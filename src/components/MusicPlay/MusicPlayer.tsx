@@ -124,8 +124,8 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
 
   return (
     <Slider
-      currentIdx={slideIdx}
-      setCurrentIdx={setSlideIdx}
+      controlIdx={slideIdx}
+      setControlIdx={setSlideIdx}
       SwiperClassName="w-screen h-full"
       SlideClassName="flex items-center justify-center"
       bulletVisible={false}

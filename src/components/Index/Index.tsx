@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useLayoutEffect, useState, useRef } from "react";
 import useVH from "react-viewport-height";
 import Slider from "./../Slider/Slider";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import BGSLIDE1 from "../../Icon/Image/Background/BGSLIDE1.jpg";
 import BGSLIDE2 from "../../Icon/Image/Background/BGSLIDE2.jpg";
 import BGSLIDE3 from "../../Icon/Image/Background/BGSLIDE3.jpg";
 import BGSLIDE4 from "../../Icon/Image/Background/BGSLIDE4.jpg";
+import { MKBLogoSvg } from "./../../Icon/Svg/MKBLogoSvg";
 
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
@@ -26,7 +27,7 @@ const Index: React.FunctionComponent = () => {
     return albumData as musicForm[];
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!JSON.parse(sessionStorage.getItem("moderndance") as string)) {
       getFirebaseData("moderndance").then((item) => {
         syncMusicList.current.push(...item);
@@ -74,8 +75,8 @@ const Index: React.FunctionComponent = () => {
       animate={{ opacity: 1 }}
     >
       <div className="flex flex-col items-center">
-        <p className="text-bold text-[2.4em]">M</p>
-        <p>MKB DANCEMUSIC</p>
+        <MKBLogoSvg />
+        <p className="mt-[1em]">MKB DANCEMUSIC</p>
       </div>
       <div className="absolute bottom-[8em] flex flex-col items-center text-[0.4em]">
         <p>ⒸMKB MUSIC 2023 All Rights Reserved.</p>

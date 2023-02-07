@@ -8,9 +8,9 @@ const NavigateWork: React.FunctionComponent = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="relative top-[35%] flex flex-col items-center"
+      className="absolute top-[50%] flex flex-col items-center"
     >
-      <p className="absolute -top-[50%] text-[0.8em]">WORK</p>
+      <p className="absolute -top-[35%] text-[0.8em]">WORK</p>
       <p
         className="my-[0.75em] cursor-pointer"
         onClick={() => navigate("/work/moderndance")}
