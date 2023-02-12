@@ -21,11 +21,13 @@ interface SliderProps {
   setInfoIdx?: React.Dispatch<React.SetStateAction<number>>;
   style?: React.CSSProperties;
   spaceBetween?: number;
+  allowTouchMove?: boolean;
 }
 
 SwiperCore.use([Mousewheel, Autoplay]);
 
 const Slider: React.FunctionComponent<SliderProps> = ({
+  allowTouchMove = true,
   children,
   SwiperClassName,
   SlideClassName,
@@ -57,8 +59,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   return (
     <>
       <Swiper
-        allowTouchMove={false}
-        touchRatio={0}
+        allowTouchMove={allowTouchMove}
         onSwiper={setSwiper}
         autoplay={autoPlay}
         spaceBetween={spaceBetween}
@@ -66,7 +67,6 @@ const Slider: React.FunctionComponent<SliderProps> = ({
           setSlideIdx(e.realIndex);
           setInfoIdx(e.realIndex);
         }}
-        cssMode={isMobile ? true : false}
         modules={[Mousewheel, Autoplay]}
         className={
           "relative z-10 flex items-center justify-center " + SwiperClassName

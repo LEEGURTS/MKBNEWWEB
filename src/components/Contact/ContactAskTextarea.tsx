@@ -1,21 +1,18 @@
 import { useState } from "react";
 
-interface ContactAskFormProps {
+interface ContactAskTextareaProps {
   askContent: string;
   setInput: (inputData: string) => void;
   placeHolder: string;
   setNextSlide: () => void;
 }
 
-export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
-  askContent,
-  setInput,
-  placeHolder,
-  setNextSlide,
-}) => {
+export const ContactAskTextarea: React.FunctionComponent<
+  ContactAskTextareaProps
+> = ({ askContent, setInput, placeHolder, setNextSlide }) => {
   const [text, setText] = useState("");
 
-  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       setNextSlide(); // Enter 입력이 되면 클릭 이벤트 실행
     }
@@ -29,10 +26,8 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
             {askContent}
           </p>
         </div>
-        <input
-          type="textarea"
-          enterKeyHint="next"
-          className="border w-[13.5em] mt-[3em] p-2 text-center rounded-[10px] border border-white placeholder-white placeholder-opacity-30 outline-0 duration-300"
+        <textarea
+          className="border text-[12px] w-[80%] lg:w-[50%] mt-[2em] p-2 text-center rounded-[10px] border border-white placeholder-white placeholder-opacity-30 outline-0 duration-300"
           style={{
             background: text
               ? "rgba(255,255,255,0.2)"
