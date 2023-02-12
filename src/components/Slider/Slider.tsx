@@ -4,7 +4,6 @@ import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 import SwiperCore, { Mousewheel, Autoplay } from "swiper";
 import SlideBullet from "./SlideBullet";
-import { isMobile } from "react-device-detect";
 
 interface SliderProps {
   children: ReactNode[];
