@@ -78,14 +78,14 @@ const Index: React.FunctionComponent = () => {
         <MKBLogoSvg />
         <p className="mt-[1em]">MKB DANCEMUSIC</p>
       </div>
-      <div className="absolute bottom-[8em] flex flex-col items-center text-[0.4em]">
+      <div className="absolute bottom-[4em] flex flex-col items-center text-[0.4em]">
         <p>ⒸMKB MUSIC 2023 All Rights Reserved.</p>
         <p> DO NOT COPY WITHOUT PERMISSION</p>
       </div>
     </motion.div>,
     <div
       key={2}
-      className="relative w-screen flex flex-col items-center justify-center"
+      className="relative w-screen"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE2})`,
@@ -93,19 +93,21 @@ const Index: React.FunctionComponent = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="flex flex-col items-center leading-8">
-        <p className="font-bold text-[1.8em]">MUSIC</p>
-        <p className="">FOR</p>
-      </div>
-      <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.5em]">
-        {`MODERN DANCE 
-        KOREA DANCE 
-        BALLET`}
+      <div className="relative top-[30%]">
+        <div className="flex flex-col items-center leading-[1.8em]">
+          <p className="font-bold text-[1.8em]">MUSIC</p>
+          <p className="">FOR</p>
+        </div>
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.5em]">
+          {`MODERN DANCE 
+          KOREA DANCE 
+          BALLET`}
+        </div>
       </div>
     </div>,
     <div
       key={3}
-      className="relative w-screen flex flex-col items-center justify-center"
+      className="relative w-screen"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE3})`,
@@ -113,16 +115,18 @@ const Index: React.FunctionComponent = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="flex flex-col items-center leading-8">
-        <p className="font-bold text-[1.8em]">MUSIC</p>
-        <p className="">BY</p>
-      </div>
-      <p className="my-[1em]">MIN JI CHOI</p>
-      <div className="flex flex-col items-center whitespace-pre-line text-center leading-[1.8em]">
-        {`Dance competitions
-            performances
-            and 
-            other work experience`}
+      <div className="relative top-[30%] flex flex-col items-center">
+        <div className="flex flex-col items-center leading-[1.8em]">
+          <p className="font-bold text-[1.8em]">MUSIC</p>
+          <p className="">BY</p>
+        </div>
+        <p className="my-[1em]">MIN JI CHOI</p>
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.5em]">
+          {`Dance competitions
+              performances
+              and 
+              other work experience`}
+        </div>
       </div>
     </div>,
     <div
@@ -152,6 +156,8 @@ const Index: React.FunctionComponent = () => {
         style={{
           height: 100 * vh,
         }}
+        effect="fade"
+        SwiperClassName="relative"
         SlideClassName="mb-0"
       >
         {indexSlideList}

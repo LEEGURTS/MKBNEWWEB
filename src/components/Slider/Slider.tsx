@@ -2,10 +2,12 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
-import SwiperCore, { Mousewheel, Autoplay } from "swiper";
+import "swiper/css/effect-fade";
+import SwiperCore, { Mousewheel, Autoplay, EffectFade } from "swiper";
 import SlideBullet from "./SlideBullet";
 
 interface SliderProps {
+  isCssMode?: boolean;
   children: ReactNode[];
   SwiperClassName?: string;
   SlideClassName?: string;
@@ -21,9 +23,18 @@ interface SliderProps {
   style?: React.CSSProperties;
   spaceBetween?: number;
   allowTouchMove?: boolean;
+  effect?:
+    | "slide"
+    | "fade"
+    | "cube"
+    | "coverflow"
+    | "flip"
+    | "creative"
+    | "cards"
+    | undefined;
 }
 
-SwiperCore.use([Mousewheel, Autoplay]);
+SwiperCore.use([Mousewheel, Autoplay, EffectFade]);
 
 const Slider: React.FunctionComponent<SliderProps> = ({
   allowTouchMove = true,
@@ -41,6 +52,8 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   setInfoIdx = () => {},
   style,
   spaceBetween = 0,
+  effect,
+  isCssMode = false,
 }) => {
   const [swiper, setSwiper] = useState<SwiperCore>();
   const [slideIdx, setSlideIdx] = useState(controlIdx);
@@ -66,7 +79,9 @@ const Slider: React.FunctionComponent<SliderProps> = ({
           setSlideIdx(e.realIndex);
           setInfoIdx(e.realIndex);
         }}
-        modules={[Mousewheel, Autoplay]}
+        cssMode={isCssMode}
+        effect={effect}
+        modules={[Mousewheel, Autoplay, EffectFade]}
         className={
           "relative z-10 flex items-center justify-center " + SwiperClassName
         }

@@ -6,6 +6,7 @@ interface SlideBulletProps {
   setSlidePage: (num: number) => void;
   isVertical?: boolean;
   bulletVisible?: boolean;
+  bulletColor?: string;
 }
 
 const SlideBullet: React.FunctionComponent<SlideBulletProps> = ({
@@ -14,6 +15,7 @@ const SlideBullet: React.FunctionComponent<SlideBulletProps> = ({
   setSlidePage,
   isVertical = false,
   bulletVisible = true,
+  bulletColor = "black",
 }) => {
   if (!bulletVisible) {
     return <></>;

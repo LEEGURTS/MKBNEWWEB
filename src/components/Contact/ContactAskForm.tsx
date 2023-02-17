@@ -5,6 +5,16 @@ interface ContactAskFormProps {
   setInput: (inputData: string) => void;
   placeHolder: string;
   setNextSlide: () => void;
+  type:
+    | "search"
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | undefined;
 }
 
 export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
@@ -12,6 +22,7 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
   setInput,
   placeHolder,
   setNextSlide,
+  type,
 }) => {
   const [text, setText] = useState("");
 
@@ -30,8 +41,8 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
           </p>
         </div>
         <input
-          type="textarea"
-          enterKeyHint="next"
+          inputMode={type}
+          enterKeyHint="done"
           className="border w-[13.5em] mt-[3em] p-2 text-center rounded-[10px] border border-white placeholder-white placeholder-opacity-30 outline-0 duration-300"
           style={{
             background: text
@@ -54,7 +65,9 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
             setInput(e.target.value);
             setText(e.target.value);
           }}
-          onKeyDown={handleOnKeyPress}
+          onKeyDown={(e) => {
+            handleOnKeyPress(e);
+          }}
         />
       </div>
     </div>

@@ -28,22 +28,21 @@ const Navigate: React.FunctionComponent = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         key={"header"}
-        className="w-full fixed z-50 flex flex-row items-center justify-between p-8"
+        className="w-full fixed z-50 flex flex-row items-start justify-between p-8"
       >
-        <MKBLogoSvg
-          width="2em"
-          height="2em"
-          fill={isNavVisible ? "white" : "black"}
-        />
+        {isNavVisible && <div className="flex-grow"></div>}
         {!isNavVisible && (
-          <HamburgerBarSvg
-            className="cursor-pointer "
-            fill="black"
-            onClick={() => {
-              setIsNavVisible(true);
-              setNavigateState(NavigateState.NONE);
-            }}
-          />
+          <>
+            <MKBLogoSvg width="2em" height="2em" fill="black" />
+            <HamburgerBarSvg
+              className="cursor-pointer "
+              fill="black"
+              onClick={() => {
+                setIsNavVisible(true);
+                setNavigateState(NavigateState.NONE);
+              }}
+            />
+          </>
         )}
         {isNavVisible && <CloseSvg onClick={() => setIsNavVisible(false)} />}
       </motion.div>
@@ -61,7 +60,7 @@ const Navigate: React.FunctionComponent = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="relative top-[18%] flex flex-col items-center">
+          <div className="relative top-[12%] flex flex-col items-center">
             <MKBLogoSvg fill="white" />
             <p className="">MKB DANCE MUSIC</p>
             <p className="text-[0.55em]">MUSIC COMPANY</p>

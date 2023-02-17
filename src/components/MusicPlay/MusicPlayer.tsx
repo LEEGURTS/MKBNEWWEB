@@ -65,6 +65,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const [playIdx, setPlayIdx] = useState(customPlayIdx);
   const audio = useRef<HTMLAudioElement>(new Audio(musicList[0].url));
   const [slideIdx, setSlideIdx] = useState(0);
+
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
     setPlayIdx(0);
@@ -130,6 +131,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       SlideClassName="flex items-center justify-center"
       bulletVisible={false}
       mouseScroll={false}
+      isCssMode={true}
     >
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
         <img alt="" src={musicList[playIdx].thumbnail} className="w-full" />
@@ -205,7 +207,11 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
           <SoundMaxSvg />
         </div>
       </div>
-      <WorkExplain explainContent={musicList[playIdx].explain} />
+
+      <WorkExplain
+        setSlideIdx={setSlideIdx}
+        explainContent={musicList[playIdx].explain}
+      />
     </Slider>
   );
 };

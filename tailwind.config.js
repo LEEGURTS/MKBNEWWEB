@@ -9,7 +9,7 @@ module.exports = {
         pretendard: ["Pretendard-Regular"],
       },
       boxShadow: {
-        "3xl": "0px 0px 2px 2px  rgba(232, 232, 232, 1)",
+        "3xl": "0px 0px 4px 4px  rgba(232, 232, 232, 1)",
       },
     },
     screens: {

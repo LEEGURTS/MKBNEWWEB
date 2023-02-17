@@ -11,7 +11,7 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <div className="absolute top-[50%] flex flex-col items-center">
+    <div className="absolute top-[40%] flex flex-col items-center">
       <p
         className="my-[0.75em] cursor-pointer"
         onClick={() => {
@@ -34,7 +34,7 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => setNavigateState(NavigateState.PROCESS)}
+        onClick={() => navigate("/workprocess")}
       >
         WORK PROCESS
       </p>

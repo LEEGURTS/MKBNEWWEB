@@ -1,5 +1,7 @@
 import { PersonalWork } from "../components/PersonalWork/PersonalWork";
 
-export const PersonalWorkPage: React.FunctionComponent = () => {
+const PersonalWorkPage: React.FunctionComponent = () => {
   return <PersonalWork />;
 };
+
+export default PersonalWorkPage;

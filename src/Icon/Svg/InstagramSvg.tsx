@@ -2,15 +2,17 @@ import React from "react";
 
 interface InstagramSvgProps {
   onClick?: () => void;
+  size?: string;
 }
 
 const InstagramSvg: React.FunctionComponent<InstagramSvgProps> = ({
   onClick,
+  size = "25",
 }) => {
   return (
     <svg
-      width="25"
-      height="25"
+      width={size}
+      height={size}
       viewBox="0 0 25 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

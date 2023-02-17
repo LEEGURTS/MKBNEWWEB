@@ -6,6 +6,7 @@ import { WorkState } from "./WORKSTATE";
 import WorkList from "./WorkList";
 import ReturnSvg from "./../../Icon/Svg/ReturnSvg";
 import React, { useMemo } from "react";
+import { MKBLogoSvg } from "../../Icon/Svg/MKBLogoSvg";
 
 interface WorkProps {
   titlePath: string;
@@ -52,7 +53,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         />
       )}
       <div className="relative flex flex-col items-center top-[10%]">
-        <p className="text-[2.5em]">M</p>
+        <MKBLogoSvg width="2.5em" height="2.5em" />
         <p className="mt-[2em] text-[0.8em] mb-[1em]">
           {titlePath + (workState === WorkState.MUSICLIST ? " MUSIC WORK" : "")}
         </p>

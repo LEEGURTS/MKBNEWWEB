@@ -17,6 +17,7 @@ export const Contact: React.FunctionComponent = () => {
     phone: "",
     email: "",
     majorField: "",
+    purpose: "",
     detail: "",
   });
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -61,7 +62,7 @@ export const Contact: React.FunctionComponent = () => {
   };
 
   const handleFormdata = (
-    formType: "name" | "phone" | "email" | "majorField" | "detail"
+    formType: "name" | "phone" | "email" | "majorField" | "detail" | "purpose"
   ) => {
     return (inputData: string) => {
       formData.current[formType] = inputData;
@@ -71,7 +72,7 @@ export const Contact: React.FunctionComponent = () => {
   const handleNext = () => {
     switch (infoIdx) {
       case 0:
-        if (!formData.current?.name) {
+        if (!formData.current.name) {
           setModalItem(
             `이름 적으시는걸 깜빡하셨어요. MKB 와의 원활한 소통을 위해서는 이름을 적어주셔야 해요.\n\nPlease Write Your Name.`
           );
@@ -82,11 +83,11 @@ export const Contact: React.FunctionComponent = () => {
         return;
       case 1:
         if (
-          !formData.current?.phone ||
+          formData.current.phone &&
           !phoneRegExp.test(formData.current.phone)
         ) {
           setModalItem(
-            `전화번호 적으시는걸 깜빡하셨어요. MKB 와의 원활한 소통을 위해서는 전화번호를 적어주셔야 해요.\n\nPlease Write Your Phone Number.`
+            `전화번호 양식이 틀렸어요. MKB 와의 원활한 소통을 위해서는 전화번호를 적어주셔야 해요.\n\nDont write phone number if you are not korean.`
           );
           setIsModalOpened(true);
         } else {
@@ -95,7 +96,7 @@ export const Contact: React.FunctionComponent = () => {
         return;
       case 2:
         if (
-          !formData.current?.email ||
+          !formData.current.email ||
           !emailRegExp.test(formData.current.email)
         ) {
           setModalItem(
@@ -108,7 +109,7 @@ export const Contact: React.FunctionComponent = () => {
         }
         return;
       case 3:
-        if (!formData.current?.majorField) {
+        if (!formData.current.majorField) {
           setModalItem(
             `전공 적으시는걸 깜빡하셨어요. MKB 와의 원활한 소통을 위해서는 전공을 적어주셔야 해요.\n\nPlease Write Your Major Field.`
           );
@@ -117,6 +118,15 @@ export const Contact: React.FunctionComponent = () => {
           setControlIdx(infoIdx + 1);
         }
         return;
+      case 4:
+        if (!formData.current.purpose) {
+          setModalItem(
+            `용도 적는것을 깜빡하셨어요. 용도가 무엇인지 알아야 더 원활한 작업이 돼요.\n\nPlease Write What's it for`
+          );
+          setIsModalOpened(true);
+        } else {
+          setControlIdx(infoIdx + 1);
+        }
     }
   };
 
@@ -137,7 +147,17 @@ export const Contact: React.FunctionComponent = () => {
         content={modalItem}
         isOpened={isModalOpened}
         setIsOpened={setIsModalOpened}
-        onClick={infoIdx === 4 && isMailSended ? () => navigate("/") : () => {}}
+        onClick={
+          infoIdx === 5 && isMailSended
+            ? () => {
+                setControlIdx(0);
+                setInfoIdx(0);
+                setIsMailSended(false);
+                setIsModalOpened(false);
+                navigate(-1);
+              }
+            : () => {}
+        }
       />
       <AnimatePresence>
         {infoIdx > 0 && (
@@ -158,7 +178,7 @@ export const Contact: React.FunctionComponent = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {infoIdx < 4 && (
+        {infoIdx < 5 && (
           <motion.button
             className="absolute z-40 rounded-[10px] py-2 px-4 text-black"
             style={{
@@ -175,8 +195,18 @@ export const Contact: React.FunctionComponent = () => {
           </motion.button>
         )}
       </AnimatePresence>
+      <div
+        className="absolute z-40 left-[50%] -translate-x-[50%]"
+        style={{
+          top: `calc(${buttonHeight}px - 3.3em)`,
+        }}
+      >
+        {infoIdx + 1}
+        {" / "}
+        {6}
+      </div>
       <AnimatePresence>
-        {infoIdx === 4 && (
+        {infoIdx === 5 && (
           <motion.button
             className="absolute z-40 rounded-[10px] py-2 px-4 text-black"
             style={{
@@ -193,6 +223,7 @@ export const Contact: React.FunctionComponent = () => {
           </motion.button>
         )}
       </AnimatePresence>
+
       <Slider
         allowTouchMove={false}
         bulletVisible={false}
@@ -207,24 +238,35 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("name")}
           placeHolder="Please write your name."
           setNextSlide={handleNext}
+          type="text"
         />
         <ContactAskForm
           askContent={`첫 만남의 기초에요.\n 전화번호가 어떻게 되시나요?\nWhat is your phone number?`}
           setInput={handleFormdata("phone")}
-          placeHolder="Please write your phone number."
+          placeHolder="Don't write if you aren't korean"
           setNextSlide={handleNext}
+          type="tel"
         />
         <ContactAskForm
           askContent={`이메일도 가끔씩 쓰이죠.\n 이메일 주소를 작성해주세요.\nwhat is your email address?`}
           setInput={handleFormdata("email")}
           placeHolder="Please write your email."
           setNextSlide={handleNext}
+          type="email"
         />
         <ContactAskForm
           askContent={`전공마다 생각이 다른 법이죠.\n전공이 무엇인가요?\nwhat is your major field?`}
           setInput={handleFormdata("majorField")}
           placeHolder="Please write your major field."
           setNextSlide={handleNext}
+          type="text"
+        />
+        <ContactAskForm
+          askContent={`음악의 용도는 다양해요. 콩쿨, 공연 등. \n 음악의 용도가 무엇인가요?\nwhat is it for?`}
+          setInput={handleFormdata("purpose")}
+          placeHolder="Please write your major field."
+          setNextSlide={handleNext}
+          type="text"
         />
         <ContactAskTextarea
           askContent={`남은 말은 여기에.\n세부사항을 적어주세요.\nwrite anything you want to speak?`}

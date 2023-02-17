@@ -31,7 +31,7 @@ export const AboutMKB: React.FunctionComponent = () => {
         SwiperClassName="relative top-[20%] w-[75%] sm:w-[60%] lg:w-[50%] h-[50vh]"
         SlideClassName="flex items-center justify-center"
       >
-        <p className="whitespace-pre-line text-[0.7em] font-pretendard">{`MKB Dance Music 은 2018년도에 설립 되었습니다
+        <p className="whitespace-pre-line text-[0.6em] font-pretendard">{`MKB Dance Music 은 2018년도에 설립 되었습니다
 
 무용인 들이 가지고 있는 고충과 생각들을 음악으로 충족 시키며
 지금까지도 수 많은 작업을 진행하고 있습니다
