@@ -16,7 +16,7 @@ import { MKBLogoSvg } from "./../../Icon/Svg/MKBLogoSvg";
 const Index: React.FunctionComponent = () => {
   const vh = useVH();
   const [wholeMusicList, setWholeMusicList] = useState<musicForm[]>([
-    { title: "", url: "", thumbnail: "", explain: "" },
+    { title: "", thumbnail: "", explain: "" },
   ]);
   const syncMusicList = useRef<musicForm[]>([]);
   const getFirebaseData = async (path: string) => {
@@ -64,7 +64,7 @@ const Index: React.FunctionComponent = () => {
   const indexSlideList = [
     <motion.div
       key={1}
-      className="relative z-10 w-screen flex items-center justify-center"
+      className="relative z-10 w-full flex items-center justify-center"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE1})`,
@@ -85,7 +85,7 @@ const Index: React.FunctionComponent = () => {
     </motion.div>,
     <div
       key={2}
-      className="relative w-screen"
+      className="relative w-full"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE2})`,
@@ -96,9 +96,9 @@ const Index: React.FunctionComponent = () => {
       <div className="relative top-[30%]">
         <div className="flex flex-col items-center leading-[1.8em]">
           <p className="font-bold text-[1.8em]">MUSIC</p>
-          <p className="">FOR</p>
+          <p className="my-4">FOR</p>
         </div>
-        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.5em]">
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3em]">
           {`MODERN DANCE 
           KOREA DANCE 
           BALLET`}
@@ -107,7 +107,7 @@ const Index: React.FunctionComponent = () => {
     </div>,
     <div
       key={3}
-      className="relative w-screen"
+      className="relative w-full"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE3})`,
@@ -118,10 +118,10 @@ const Index: React.FunctionComponent = () => {
       <div className="relative top-[30%] flex flex-col items-center">
         <div className="flex flex-col items-center leading-[1.8em]">
           <p className="font-bold text-[1.8em]">MUSIC</p>
-          <p className="">BY</p>
+          <p className="my-4">BY</p>
         </div>
         <p className="my-[1em]">MIN JI CHOI</p>
-        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.5em]">
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3em]">
           {`Dance competitions
               performances
               and 

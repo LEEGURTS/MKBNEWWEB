@@ -33,7 +33,7 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
   };
 
   return (
-    <div className="relative w-screen h-full">
+    <div className="relative w-full h-full">
       <div className="relative top-[8%] lg:top-[30%] flex flex-col items-center font-medium">
         <div className="flex flex-col items-center">
           <p className="whitespace-pre-line text-center leading-[2em]">

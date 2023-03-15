@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, motion } from "framer-motion";
 import useVH from "react-viewport-height";
 import MusicPlayer from "../MusicPlay/MusicPlayer";
 import { useState } from "react";
 import { WorkState } from "./WORKSTATE";
 import WorkList from "./WorkList";
-import ReturnSvg from "./../../Icon/Svg/ReturnSvg";
 import React, { useMemo } from "react";
 import { MKBLogoSvg } from "../../Icon/Svg/MKBLogoSvg";
+import Navigate from "../Navigate/Navigate";
+import { useEffect } from "react";
 
 interface WorkProps {
   titlePath: string;
@@ -22,6 +24,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
     JSON.parse(sessionStorage.getItem("personalwork") as string),
   ];
   const [playIdx, setPlayIdx] = useState(0);
+  const [playerPos, setPlayerPos] = useState(0);
 
   const musicDataList = useMemo(() => {
     switch (titlePath) {
@@ -37,41 +40,58 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         return [{ title: "", url: "", explain: "", thumbnail: "" }];
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  console.log(musicDataList);
+  }, [titlePath]);
+
+  useEffect(() => {
+    if (workState === WorkState.MUSICPLAY) {
+      setPlayerPos(0);
+    } else if (workState === WorkState.MUSICLIST) {
+      setPlayerPos(90 * vh);
+    }
+  }, [workState]);
+
   return (
-    <motion.div
-      className="w-screen bg-[#D9D9D9] flex flex-col items-center"
-      style={{ height: 100 * vh }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <div
+      className="relative w-full"
+      style={{
+        height: `${100 * vh}px`,
+      }}
     >
-      {workState === WorkState.MUSICLIST && (
-        <ReturnSvg
-          className="absolute top-[1em] right-[1em]"
-          onClick={() => setWorkState(WorkState.MUSICPLAY)}
-        />
-      )}
-      <div className="relative flex flex-col items-center top-[10%]">
-        <MKBLogoSvg width="2.5em" height="2.5em" />
-        <p className="mt-[2em] text-[0.8em] mb-[1em]">
-          {titlePath + (workState === WorkState.MUSICLIST ? " MUSIC WORK" : "")}
-        </p>
-        <AnimatePresence>
-          {workState === WorkState.MUSICLIST && (
-            <motion.div
-              key={"musiclist"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <WorkList
-                setWorkState={setWorkState}
-                setMusicState={setPlayIdx}
-                musicList={musicDataList}
-              />
-            </motion.div>
-          )}
-          {workState === WorkState.MUSICPLAY && (
+      <motion.div
+        className="w-full fixed z-20 bg-[#D9D9D9] flex flex-col items-center rounded-[2em]"
+        style={{
+          height: 100 * vh,
+        }}
+        initial={{ opacity: 0 }}
+        transition={{
+          type: "spring",
+          bounce: 0.25,
+        }}
+        animate={{
+          opacity: 1,
+          y: playerPos,
+        }}
+      >
+        <Navigate isLogoVisible={false} />
+        <div
+          className="relative z-50 top-[3%] w-[4em] h-[8px] "
+          onClick={() => {
+            if (workState === WorkState.MUSICPLAY) {
+              setWorkState(WorkState.MUSICLIST);
+            } else {
+              setWorkState(WorkState.MUSICPLAY);
+            }
+          }}
+        >
+          <div className="w-full h-full rounded-full bg-black"></div>
+        </div>
+        <div className="relative flex flex-col items-center top-[10%]">
+          <MKBLogoSvg width="2.5em" height="2.5em" />
+          <p className="mt-[2em] text-[0.8em] mb-[1em]">
+            {titlePath +
+              (workState === WorkState.MUSICLIST ? " MUSIC WORK" : "")}
+          </p>
+          <AnimatePresence>
             <motion.div
               key={"musicplay"}
               initial={{ opacity: 0 }}
@@ -81,12 +101,40 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
                 customPlayIdx={playIdx}
                 musicList={musicDataList}
                 setWorkState={setWorkState}
+                musicType={titlePath}
               />
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+      <motion.div
+        className="w-full relative z-10 bg-white flex flex-col items-center"
+        style={{ height: 100 * vh }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <div className="relative flex flex-col items-center top-[10%]">
+          <MKBLogoSvg width="2.5em" height="2.5em" />
+          <p className="mt-[2em] text-[0.8em] mb-[1em]">
+            {titlePath +
+              (workState === WorkState.MUSICLIST ? " MUSIC WORK" : "")}
+          </p>
+          <AnimatePresence>
+            <motion.div
+              key={"musicplay"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <WorkList
+                musicList={musicDataList}
+                setMusicState={setPlayIdx}
+                setWorkState={setWorkState}
+              ></WorkList>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 

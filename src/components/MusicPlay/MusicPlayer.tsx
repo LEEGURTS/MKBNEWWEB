@@ -13,6 +13,9 @@ import { musicForm } from "../MusicList/MusicList";
 import Slider from "../Slider/Slider";
 import WorkExplain from "./WorkExplain";
 import PauseSvg from "../../Icon/Svg/PauseSvg";
+import localforage from "localforage";
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../../Firebase";
 
 const VolumeControl = styled.div`
 display: flex;
@@ -50,6 +53,7 @@ interface MusicPlayerProps {
   musicListVisible?: boolean;
   musicList: musicForm[];
   customPlayIdx?: number;
+  musicType?: string;
 }
 
 const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
@@ -57,56 +61,103 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   musicListVisible = true,
   musicList,
   customPlayIdx = 0,
+  musicType,
 }) => {
   const [musicPlaying, setMusicPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [, setMusicVolume] = useState<number>(1);
   const intervalRef = useRef<NodeJS.Timer>();
   const [playIdx, setPlayIdx] = useState(customPlayIdx);
-  const audio = useRef<HTMLAudioElement>(new Audio(musicList[0].url));
+  const audio = useRef<HTMLAudioElement>(new Audio());
   const [slideIdx, setSlideIdx] = useState(0);
+  const [isLoopState, setIsLoopState] = useState(false);
+
+  useEffect(() => {
+    setPlayIdx(customPlayIdx);
+    handlePlayMusic(musicList[customPlayIdx].title).then(() => musicStart());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customPlayIdx]);
 
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
     setPlayIdx(0);
-    audio.current.src = musicList[0].url;
-    musicStart();
+    handlePlayMusic(musicList[0].title).then(() => {
+      musicStart();
+    });
   };
 
   const increasePlayIdx = () => {
+    musicPause();
     if (playIdx === musicList.length - 1) {
+      handlePlayMusic(musicList[0].title).then(() => musicStart());
       setPlayIdx(0);
-      audio.current.src = musicList[0].url;
     } else {
+      handlePlayMusic(musicList[playIdx + 1].title).then(() => musicStart());
       setPlayIdx(playIdx + 1);
-      audio.current.src = musicList[playIdx + 1].url;
     }
-
-    musicStart();
   };
 
   const decreasePlayIdx = () => {
+    musicPause();
     if (playIdx === 0) {
+      handlePlayMusic(musicList[musicList.length - 1].title).then(() =>
+        musicStart()
+      );
       setPlayIdx(musicList.length - 1);
-      audio.current.src = musicList[musicList.length - 1].url;
     } else {
+      handlePlayMusic(musicList[playIdx - 1].title).then(() => musicStart());
       setPlayIdx(playIdx - 1);
-      audio.current.src = musicList[playIdx - 1].url;
     }
-    musicStart();
   };
 
-  useEffect(() => {
-    audio.current.src = musicList[playIdx].url;
+  useEffect(
+    () => {
+      handlePlayMusic(musicList[0].title);
+      console.log(musicList);
+      audio.current.currentTime = 0;
+      musicPause();
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [musicList]);
+    [musicList]
+  );
 
   useEffect(() => {
+    if (audio.current.currentTime === audio.current.duration) {
+      if (isLoopState) {
+        audio.current.currentTime = 0;
+        musicStart();
+      } else {
+        increasePlayIdx();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audio.current.currentTime]);
+
+  useEffect(() => {
+    audio.current.preload = "none";
     return () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       audio.current.pause();
     };
   }, []);
+
+  const handlePlayMusic = async (musicName: string) => {
+    const item: Blob | null = await localforage.getItem(musicName);
+    if (item) {
+      audio.current.src = URL.createObjectURL(item);
+    } else {
+      try {
+        const attachmentRef = ref(storage, `${musicType}/${musicName}.mp3`);
+        const url = await getDownloadURL(attachmentRef);
+        const res = await fetch(url);
+        const blob = await res.blob();
+        localforage.setItem(musicName, blob);
+        audio.current.src = URL.createObjectURL(blob);
+      } catch {
+        audio.current.src = "";
+      }
+    }
+  };
 
   const musicStart = () => {
     clearInterval(intervalRef.current);
@@ -167,7 +218,9 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
           />
         </VolumeControl>
         <div className="w-[calc(100%+40px)] my-[2em] flex flex-row items-center justify-between">
-          <ShuffleSvg onClick={() => shuffleMusicList()} />
+          <div className="p-1">
+            <ShuffleSvg onClick={() => shuffleMusicList()} />
+          </div>
           <div className="flex items-center w-[40%] lg:w-[30%] justify-between">
             <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
               <PrevPlaySvg onClick={() => decreasePlayIdx()} />
@@ -186,7 +239,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
               <PrevPlaySvg isRotate={true} onClick={() => increasePlayIdx()} />
             </div>
           </div>
-          <OneRoofSvg />
+          <div
+            className={
+              isLoopState
+                ? "p-1 cursor-pointer rounded-full bg-[#ff0000] bg-opacity-20 duration-300"
+                : "p-1 cursor-pointer hover:bg-black hover:bg-opacity-20 rounded-full duration-300"
+            }
+          >
+            <OneRoofSvg onClick={() => setIsLoopState(!isLoopState)} />
+          </div>
         </div>
         <div className="w-[calc(100%+40px)] flex flex-row items-center justify-between">
           <SoundMinSvg />
@@ -207,7 +268,6 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
           <SoundMaxSvg />
         </div>
       </div>
-
       <WorkExplain
         setSlideIdx={setSlideIdx}
         explainContent={musicList[playIdx].explain}

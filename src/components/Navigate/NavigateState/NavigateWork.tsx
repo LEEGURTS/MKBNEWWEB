@@ -2,7 +2,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const NavigateWork: React.FunctionComponent = () => {
+interface NavigateWorkProps {
+  setIsNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const NavigateWork: React.FunctionComponent<NavigateWorkProps> = ({
+  setIsNavVisible,
+}) => {
   const navigate = useNavigate();
   return (
     <motion.div
@@ -13,19 +19,28 @@ const NavigateWork: React.FunctionComponent = () => {
       <p className="absolute -top-[35%] text-[0.8em]">WORK</p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/work/moderndance")}
+        onClick={() => {
+          navigate("/work/moderndance");
+          setIsNavVisible(false);
+        }}
       >
         MODERN DANCE
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/work/koreadance")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/work/koreadance");
+        }}
       >
         KOREA
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/work/ballet")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/work/ballet");
+        }}
       >
         BALLET
       </p>

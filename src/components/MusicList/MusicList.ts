@@ -2,7 +2,6 @@ import { create } from "zustand";
 
 export interface musicForm {
   title: string;
-  url: string;
   explain: string;
   thumbnail: string;
 }
@@ -17,9 +16,9 @@ interface MusicListState {
 }
 
 export const useMusicListStore = create<MusicListState>()((set) => ({
-  modernDanceList: [{ title: "", url: "", explain: "", thumbnail: "" }],
-  koreaDanceList: [{ title: "", url: "", explain: "", thumbnail: "" }],
-  balletList: [{ title: "", url: "", explain: "", thumbnail: "" }],
+  modernDanceList: [{ title: "", explain: "", thumbnail: "" }],
+  koreaDanceList: [{ title: "", explain: "", thumbnail: "" }],
+  balletList: [{ title: "", explain: "", thumbnail: "" }],
   setModernDanceList: (bgState: musicForm[]) =>
     set(() => ({ modernDanceList: bgState })),
   setKoreaDanceList: (bgState: musicForm[]) =>

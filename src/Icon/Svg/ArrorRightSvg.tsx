@@ -14,7 +14,7 @@ export const ArrowRightSvg: React.FunctionComponent<ArrowRightSvgProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       className={isLeft ? "rotate-180" : ""}
     >
-      <g clip-path="url(#clip0_174_330)">
+      <g clipPath="url(#clip0_174_330)">
         <path
           d="M15 12L0 12"
           stroke="#2A353D"

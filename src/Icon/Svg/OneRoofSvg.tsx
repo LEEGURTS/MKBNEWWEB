@@ -1,8 +1,18 @@
 import React from "react";
 
-const OneRoofSvg: React.FunctionComponent = () => {
+interface OneRoofSvgProps {
+  onClick?: () => void;
+  className?: string;
+}
+
+const OneRoofSvg: React.FunctionComponent<OneRoofSvgProps> = ({
+  onClick,
+  className,
+}) => {
   return (
     <svg
+      className={className}
+      onClick={onClick}
       width="19"
       height="19"
       viewBox="0 0 19 19"

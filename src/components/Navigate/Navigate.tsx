@@ -7,7 +7,13 @@ import NavigateWork from "./NavigateState/NavigateWork";
 import CloseSvg from "./../../Icon/Svg/CloseSvg";
 import { MKBLogoSvg } from "./../../Icon/Svg/MKBLogoSvg";
 
-const Navigate: React.FunctionComponent = () => {
+interface NavigateProps {
+  isLogoVisible?: boolean;
+}
+
+const Navigate: React.FunctionComponent<NavigateProps> = ({
+  isLogoVisible = true,
+}) => {
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [navigateState, setNavigateState] = useState<NavigateState>(
     NavigateState.NONE
@@ -18,7 +24,7 @@ const Navigate: React.FunctionComponent = () => {
       case NavigateState.NONE:
         return <NavigateNone setNavigateState={setNavigateState} />;
       case NavigateState.WORK:
-        return <NavigateWork />;
+        return <NavigateWork setIsNavVisible={setIsNavVisible} />;
     }
   };
   return (
@@ -28,12 +34,15 @@ const Navigate: React.FunctionComponent = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         key={"header"}
-        className="w-full fixed z-50 flex flex-row items-start justify-between p-8"
+        className="w-full fixed z-40 flex flex-row items-start justify-between p-8"
       >
         {isNavVisible && <div className="flex-grow"></div>}
         {!isNavVisible && (
           <>
-            <MKBLogoSvg width="2em" height="2em" fill="black" />
+            {isLogoVisible && (
+              <MKBLogoSvg width="2em" height="2em" fill="black" />
+            )}
+            {!isLogoVisible && <div className="flex-grow"></div>}
             <HamburgerBarSvg
               className="cursor-pointer "
               fill="black"
@@ -52,7 +61,7 @@ const Navigate: React.FunctionComponent = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           key={"navigate"}
-          className="absolute w-full h-full text-white z-40 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] py-[1em] flex flex-col items-center"
+          className="absolute w-full h-full text-white z-30 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] py-[1em] flex flex-col items-center"
           style={{
             background: "black",
 

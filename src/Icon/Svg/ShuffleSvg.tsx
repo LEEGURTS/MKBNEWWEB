@@ -2,9 +2,13 @@ import React from "react";
 
 interface ShuffleSvgProps {
   onClick?: () => void;
+  className?: string;
 }
 
-const ShuffleSvg: React.FunctionComponent<ShuffleSvgProps> = ({ onClick }) => {
+const ShuffleSvg: React.FunctionComponent<ShuffleSvgProps> = ({
+  onClick,
+  className,
+}) => {
   return (
     <svg
       onClick={onClick}

@@ -10,7 +10,10 @@ const WorkListItem: React.FunctionComponent<WorkListItemProps> = ({
   onClick,
 }) => {
   return (
-    <div className="flex flex-col items-center" onClick={onClick}>
+    <div
+      className="flex flex-col items-center cursor-pointer"
+      onClick={onClick}
+    >
       <img
         className="w-[40vw] h-[40vw] sm:w-[22vw] sm:h-[22vw] lg:w-[20vw] lg:h-[20vw] object-cover"
         alt=""

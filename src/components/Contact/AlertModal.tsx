@@ -39,7 +39,7 @@ export const AlertModal: React.FunctionComponent<AlertModalProps> = ({
       <AnimatePresence>
         {isOpened && (
           <motion.div
-            className="absolute w-screen left-[50%] flex items-center justify-center -translate-x-[50%] top-[50%] -translate-y-[50%] z-50 bg-black bg-opacity-50 backdrop-blur"
+            className="absolute w-full left-[50%] flex items-center justify-center -translate-x-[50%] top-[50%] -translate-y-[50%] z-50 bg-black bg-opacity-50 backdrop-blur"
             style={{ height: vh * 100 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
