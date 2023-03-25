@@ -52,7 +52,10 @@ const WorkProcessItem: React.FunctionComponent<WorkProcessItemProps> = ({
           alignItems: itemPos === "left" ? "flex-start" : "flex-end",
         }}
       >
-        <div className="flex items-center justify-center bg-black rounded-full p-4">
+        <div
+          className="flex items-center justify-center bg-black rounded-full p-4 cursor-pointer"
+          onClick={onClick}
+        >
           {icon}
         </div>
         <div

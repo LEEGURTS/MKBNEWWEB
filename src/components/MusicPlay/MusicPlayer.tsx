@@ -17,13 +17,14 @@ import localforage from "localforage";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
 import LoadingSvg from "../../Icon/Svg/LoadingSvg";
+import AltImage from "../../Icon/Image/Alt.jpg";
 
 const VolumeControl = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
 width: 100%;
-input[type='range'] {
+input[type=range] {
   -webkit-appearance: none;
   background: transparent;
   &:focus {
@@ -31,18 +32,23 @@ input[type='range'] {
   }
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
-    margin-top: -6px;
+    height: 20px;
+    width: 20px;
+    margin-top: -8.8px;
     border-radius: 50%;
     background: black;
     cursor: pointer;
+    background-clip: padding-box;
+    border: 7px solid rgba(0, 0, 0, 0.0);
+    transform: scale(1.5);
   }
   &::-webkit-slider-runnable-track {
-    height: 2px;
+    height: 20px;
     background: #6D6C6C;
     transition: all 0.5s;
     cursor: pointer;
+    background-clip: padding-box;
+    border: 9px solid rgba(0, 0, 0, 0.0);
   }
 `;
 interface MusicPlayerProps {
@@ -207,7 +213,11 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       isCssMode={true}
     >
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
-        <img alt="" src={musicList[playIdx].thumbnail} className="w-full" />
+        <img
+          alt=""
+          src={musicList[playIdx].thumbnail || AltImage}
+          className="w-full"
+        />
         <div className="w-full flex flex-row justify-between items-end mt-[1em]">
           <div className="flex flex-col">
             <p className="text-[0.6em]">{musicList[playIdx].title}</p>
@@ -247,7 +257,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
             )}`}
           </p>
         </div>
-        <div className="w-[calc(100%+40px)] my-[1em] sc4:my-[1.5em] flex flex-row items-center justify-between">
+        <div className="w-[calc(100%+40px)] mt-[0.2em] mb-[0.8em] sc4:mt-[0.2em] sc4:mb-[1.5em] flex flex-row items-center justify-between">
           <div className="p-1">
             <ShuffleSvg onClick={() => shuffleMusicList()} />
           </div>

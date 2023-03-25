@@ -60,7 +60,6 @@ const Slider: React.FunctionComponent<SliderProps> = ({
   const handleIndex = (selectedIdx: number) => {
     swiper?.slideTo(selectedIdx);
   };
-
   useEffect(() => {
     setSlideIdx(controlIdx);
     setInfoIdx(controlIdx);
@@ -79,6 +78,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
           setSlideIdx(e.realIndex);
           setInfoIdx(e.realIndex);
         }}
+        mousewheel={mouseScroll ? true : false}
         cssMode={isCssMode}
         effect={effect}
         modules={[Mousewheel, Autoplay, EffectFade]}
@@ -89,13 +89,6 @@ const Slider: React.FunctionComponent<SliderProps> = ({
           loadPrevNext: true,
         }}
         direction={isVerticalSlide ? "vertical" : "horizontal"}
-        mousewheel={
-          mouseScroll
-            ? {
-                forceToAxis: false,
-              }
-            : false
-        }
         style={style}
         centeredSlides={true}
       >

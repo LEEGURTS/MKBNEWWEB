@@ -6,6 +6,7 @@ interface ContactAskFormProps {
   setInput: (inputData: string) => void;
   placeHolder: string;
   setNextSlide: () => void;
+  focusOut?: () => void;
   type:
     | "search"
     | "text"
@@ -23,6 +24,7 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
   setInput,
   placeHolder,
   setNextSlide,
+  focusOut = () => {},
   type,
 }) => {
   const [text, setText] = useState("");
@@ -59,6 +61,7 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
               setText("");
             }
             console.log(text);
+            focusOut();
           }}
           onFocus={() => {
             if (!text) {

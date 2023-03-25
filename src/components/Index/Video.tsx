@@ -12,8 +12,10 @@ const Video: React.FunctionComponent<VideoProps> = ({ setState }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      loop={true}
       autoPlay={true}
       muted={true}
+      playsInline={true}
       onTimeUpdate={(e) => {
         if (e.currentTarget.currentTime > 2) {
           setState(false);

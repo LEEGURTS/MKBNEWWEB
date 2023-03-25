@@ -24,15 +24,26 @@ export const Contact: React.FunctionComponent = () => {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [modalItem, setModalItem] = useState<string>("");
   const [buttonHeight, setButtonHeight] = useState<number>(0);
-  const isKeyboardOpen = useDetectKeyboardOpen();
   const [infoIdx, setInfoIdx] = useState(0);
   const [controlIdx, setControlIdx] = useState(0);
   const [isMailSended, setIsMailSended] = useState(false);
   const navigate = useNavigate();
-
+  const iskeyboardOpened = useDetectKeyboardOpen();
   useLayoutEffect(() => {
     setButtonHeight(visualViewport?.height || 0);
-  }, [isKeyboardOpen]);
+  }, [iskeyboardOpened]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (visualViewport && window.innerHeight > visualViewport.height) {
+        setTimeout(() => {
+          setButtonHeight(visualViewport?.height || 0);
+        }, 200);
+      }
+    };
+    visualViewport?.addEventListener("resize", handleResize);
+    return () => visualViewport?.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -238,6 +249,7 @@ export const Contact: React.FunctionComponent = () => {
       <Slider
         allowTouchMove={false}
         bulletVisible={false}
+        mouseScroll={false}
         SwiperClassName="w-full h-full relative top-[5%]"
         setInfoIdx={setInfoIdx}
         infoIdx={infoIdx}
@@ -249,6 +261,11 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("name")}
           placeHolder="Please write your name."
           setNextSlide={handleNext}
+          focusOut={() => {
+            setTimeout(() => {
+              setButtonHeight(visualViewport?.height || 0);
+            }, 200);
+          }}
           type="text"
         />
         <ContactAskForm
