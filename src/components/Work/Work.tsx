@@ -9,6 +9,9 @@ import React, { useMemo } from "react";
 import { MKBLogoSvg } from "../../Icon/Svg/MKBLogoSvg";
 import Navigate from "../Navigate/Navigate";
 import { useEffect } from "react";
+import { useRef } from "react";
+import { throttle } from "lodash";
+import { isMobile } from "react-device-detect";
 
 interface WorkProps {
   titlePath: string;
@@ -25,7 +28,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   ];
   const [playIdx, setPlayIdx] = useState(0);
   const [playerPos, setPlayerPos] = useState(0);
-
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const musicDataList = useMemo(() => {
     switch (titlePath) {
       case "MODERN DANCE":
@@ -50,6 +53,51 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
     }
   }, [workState]);
 
+  useEffect(() => {
+    const handleScroll = (e: WheelEvent) => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        setWorkState(WorkState.MUSICLIST);
+      } else {
+        setWorkState(WorkState.MUSICPLAY);
+      }
+    };
+    const throttleHandleScroll = throttle((e) => handleScroll(e), 200);
+
+    document.addEventListener("wheel", throttleHandleScroll);
+    return () => document.removeEventListener("wheel", throttleHandleScroll);
+  }, []);
+
+  useEffect(() => {
+    let touchStart = 0;
+    let touchMove = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStart = e.touches[0].pageY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      touchMove = e.touches[0].pageY - touchStart;
+      setPlayerPos(e.touches[0].pageY - 3 * vh);
+    };
+
+    const handleTouchEnd = () => {
+      if (touchMove > 50) {
+        setWorkState(WorkState.MUSICLIST);
+      } else if (touchMove < -50) {
+        setWorkState(WorkState.MUSICPLAY);
+      } else {
+        setPlayerPos(workState === WorkState.MUSICPLAY ? 0 : 90 * vh);
+      }
+    };
+
+    scrollRef.current?.addEventListener("touchstart", handleTouchStart);
+    scrollRef.current?.addEventListener("touchmove", handleTouchMove);
+    scrollRef.current?.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      scrollRef.current?.removeEventListener("touchstart", handleTouchStart);
+      scrollRef.current?.removeEventListener("touchmove", handleTouchMove);
+      scrollRef.current?.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [workState]);
   return (
     <div
       className="relative w-full"
@@ -62,30 +110,23 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         style={{
           height: 100 * vh,
         }}
+        transition={{}}
         initial={{ opacity: 0 }}
-        transition={{
-          type: "spring",
-          bounce: 0.25,
-        }}
         animate={{
-          opacity: 1,
           y: playerPos,
+          opacity: 1,
         }}
       >
         <Navigate isLogoVisible={false} />
-        <div
-          className="relative z-50 top-[3%] w-[4em] h-[8px] "
-          onClick={() => {
-            if (workState === WorkState.MUSICPLAY) {
-              setWorkState(WorkState.MUSICLIST);
-            } else {
-              setWorkState(WorkState.MUSICPLAY);
-            }
-          }}
-        >
-          <div className="w-full h-full rounded-full bg-black"></div>
-        </div>
-        <div className="relative flex flex-col items-center top-[10%]">
+        {isMobile && (
+          <div
+            className="relative z-50 w-[6em] h-[4em] px-[1em] py-[1.9em] rounded-full"
+            ref={scrollRef}
+          >
+            <div className="w-full h-full rounded-full bg-black"></div>
+          </div>
+        )}
+        <div className="relative flex flex-col items-center top-[5%]">
           <MKBLogoSvg width="2.5em" height="2.5em" />
           <p className="mt-[2em] text-[0.8em] mb-[1em]">
             {titlePath +

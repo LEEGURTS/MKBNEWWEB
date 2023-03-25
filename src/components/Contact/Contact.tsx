@@ -1,7 +1,7 @@
 import { ContactAskForm } from "./ContactAskForm";
 import useVH from "react-viewport-height";
 import Slider from "../Slider/Slider";
-import { useRef, useState, useLayoutEffect } from "react";
+import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useDetectKeyboardOpen from "use-detect-keyboard-open";
 import { ArrowRightSvg } from "../../Icon/Svg/ArrorRightSvg";
@@ -9,6 +9,7 @@ import emailjs from "emailjs-com";
 import { AlertModal } from "./AlertModal";
 import { useNavigate } from "react-router-dom";
 import { ContactAskTextarea } from "./ContactAskTextarea";
+import ArrorNoBarSvg from "../../Icon/Svg/ArrorNoBarSvg";
 
 export const Contact: React.FunctionComponent = () => {
   const vh = useVH();
@@ -33,6 +34,10 @@ export const Contact: React.FunctionComponent = () => {
     setButtonHeight(visualViewport?.height || 0);
   }, [isKeyboardOpen]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [vh]);
+
   const emailRegExp =
     /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
   const phoneRegExp =
@@ -47,7 +52,7 @@ export const Contact: React.FunctionComponent = () => {
     }
     emailjs.init("8tUMJD-CWmY4AnxOY");
     console.log(formData.current);
-    emailjs.send("service_r3whhel", "template_cwdxqzd", formData.current).then(
+    emailjs.send("service_bqvh4mm", "template_cwdxqzd", formData.current).then(
       (response) => {
         setModalItem(
           `메일 전송이 완료되었어요! 조금만 기다려주시면 금방 답장해드릴게요.\n\nEmail sent complete.`
@@ -159,6 +164,12 @@ export const Contact: React.FunctionComponent = () => {
             : () => {}
         }
       />
+      <ArrorNoBarSvg
+        className="absolute z-50 right-4 top-4"
+        size="2em"
+        fill="white"
+        onClick={() => navigate(-1)}
+      />
       <AnimatePresence>
         {infoIdx > 0 && (
           <motion.button
@@ -227,7 +238,7 @@ export const Contact: React.FunctionComponent = () => {
       <Slider
         allowTouchMove={false}
         bulletVisible={false}
-        SwiperClassName="w-full h-full"
+        SwiperClassName="w-full h-full relative top-[5%]"
         setInfoIdx={setInfoIdx}
         infoIdx={infoIdx}
         controlIdx={controlIdx}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isDesktop, isTablet } from "react-device-detect";
 
 interface ContactAskFormProps {
   askContent: string;
@@ -25,7 +26,6 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
   type,
 }) => {
   const [text, setText] = useState("");
-
   const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setNextSlide(); // Enter 입력이 되면 클릭 이벤트 실행
@@ -34,7 +34,12 @@ export const ContactAskForm: React.FunctionComponent<ContactAskFormProps> = ({
 
   return (
     <div className="relative w-full h-full">
-      <div className="relative top-[8%] lg:top-[30%] flex flex-col items-center font-medium">
+      <div
+        className="relative flex flex-col items-center font-medium"
+        style={{
+          top: isDesktop ? (isTablet ? "8%" : "30%") : "8%",
+        }}
+      >
         <div className="flex flex-col items-center">
           <p className="whitespace-pre-line text-center leading-[2em]">
             {askContent}

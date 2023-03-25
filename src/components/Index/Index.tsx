@@ -98,7 +98,7 @@ const Index: React.FunctionComponent = () => {
           <p className="font-bold text-[1.8em]">MUSIC</p>
           <p className="my-4">FOR</p>
         </div>
-        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3em]">
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3.5em]">
           {`MODERN DANCE 
           KOREA DANCE 
           BALLET`}
@@ -118,10 +118,10 @@ const Index: React.FunctionComponent = () => {
       <div className="relative top-[30%] flex flex-col items-center">
         <div className="flex flex-col items-center leading-[1.8em]">
           <p className="font-bold text-[1.8em]">MUSIC</p>
-          <p className="my-4">BY</p>
+          <p className="mt-4 mb-2">BY</p>
         </div>
-        <p className="my-[1em]">MIN JI CHOI</p>
-        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3em]">
+        <p className="my-[0.7em]">MIN JI CHOI</p>
+        <div className="flex flex-col items-center whitespace-pre-line text-center leading-[2.2em]">
           {`Dance competitions
               performances
               and 
@@ -131,7 +131,7 @@ const Index: React.FunctionComponent = () => {
     </div>,
     <div
       key={4}
-      className="relative w-screen flex flex-col items-center justify-center"
+      className="relative w-screen flex flex-col items-center relative"
       style={{
         height: 100 * vh,
         backgroundImage: `url(${BGSLIDE4})`,
@@ -139,11 +139,13 @@ const Index: React.FunctionComponent = () => {
         backgroundSize: "cover",
       }}
     >
-      <MusicPlayer
-        musicListVisible={false}
-        setWorkState={() => {}}
-        musicList={wholeMusicList}
-      />
+      <div className="relative top-[53%] -translate-y-[50%]">
+        <MusicPlayer
+          musicListVisible={false}
+          setWorkState={() => {}}
+          musicList={wholeMusicList}
+        />
+      </div>
     </div>,
   ];
 

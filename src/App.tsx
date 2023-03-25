@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import IndexPage from "./pages/IndexPage";
-
+import First2 from "./components/Index/First2";
 import { lazy, Suspense } from "react";
 function App() {
   const WorkPage = lazy(() => import("./pages/WorkPage"));
@@ -19,6 +19,7 @@ function App() {
           <Route element={<PersonalWorkPage />} path="/personalwork" />
           <Route element={<ContactPage />} path="/contact" />
           <Route element={<WorkProcessPage />} path="/workprocess" />
+          <Route element={<First2 />} path="/video" />
         </Routes>
       </Suspense>
     </div>

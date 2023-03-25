@@ -21,7 +21,7 @@ const WorkProcess: React.FunctionComponent = () => {
         WORK PROCESS
       </div>
       <div
-        className="relative top-[7em] w-full p-[5%] overflow-y-scroll scrollbar-hide"
+        className="relative top-[7em] w-full p-[5%] overflow-y-scroll scrollbar-hide "
         style={{
           height: `calc(100*${vh}px - 16em)`,
         }}

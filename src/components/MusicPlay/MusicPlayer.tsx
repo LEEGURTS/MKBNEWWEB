@@ -16,31 +16,28 @@ import PauseSvg from "../../Icon/Svg/PauseSvg";
 import localforage from "localforage";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
+import LoadingSvg from "../../Icon/Svg/LoadingSvg";
 
 const VolumeControl = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
 width: 100%;
-
 input[type='range'] {
   -webkit-appearance: none;
   background: transparent;
-
   &:focus {
     outline: none;
   }
-
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 10px;
-    width: 10px;
-    margin-top: -4px;
+    height: 15px;
+    width: 15px;
+    margin-top: -6px;
     border-radius: 50%;
     background: black;
     cursor: pointer;
   }
-
   &::-webkit-slider-runnable-track {
     height: 2px;
     background: #6D6C6C;
@@ -71,12 +68,21 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const audio = useRef<HTMLAudioElement>(new Audio());
   const [slideIdx, setSlideIdx] = useState(0);
   const [isLoopState, setIsLoopState] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setPlayIdx(customPlayIdx);
     handlePlayMusic(musicList[customPlayIdx].title).then(() => musicStart());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customPlayIdx]);
+
+  const calculateTime = (time: number) => {
+    if (!time) {
+      return "00:00";
+    }
+    const minute = Math.floor(time / 60);
+    const second = Math.floor(time % 60);
+    return `${minute}:${second < 10 ? "0" + second : second}`;
+  };
 
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
@@ -112,10 +118,8 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
 
   useEffect(
     () => {
-      handlePlayMusic(musicList[0].title);
-      console.log(musicList);
+      handlePlayMusic(musicList[0].title).then(() => musicPause());
       audio.current.currentTime = 0;
-      musicPause();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [musicList]
@@ -144,15 +148,25 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const handlePlayMusic = async (musicName: string) => {
     const item: Blob | null = await localforage.getItem(musicName);
     if (item) {
-      audio.current.src = URL.createObjectURL(item);
+      try {
+        audio.current.src = webkitURL.createObjectURL(item);
+      } catch {
+        audio.current.src = URL.createObjectURL(item);
+      }
     } else {
       try {
-        const attachmentRef = ref(storage, `${musicType}/${musicName}.mp3`);
+        const attachmentRef = ref(storage, `/${musicName}.mp3`);
         const url = await getDownloadURL(attachmentRef);
-        const res = await fetch(url);
+        const handleFetch = async () => {
+          setIsLoading(true);
+          const res = await fetch(url);
+          setIsLoading(false);
+          return res;
+        };
+        const res = await handleFetch();
         const blob = await res.blob();
         localforage.setItem(musicName, blob);
-        audio.current.src = URL.createObjectURL(blob);
+        audio.current.src = (webkitURL || URL).createObjectURL(blob);
       } catch {
         audio.current.src = "";
       }
@@ -160,6 +174,14 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   };
 
   const musicStart = () => {
+    if (
+      audio.current.src === "" ||
+      audio.current.src === window.location.href
+    ) {
+      return;
+    }
+    console.log(audio.current.src);
+    console.log(window.location.href);
     clearInterval(intervalRef.current);
     setMusicPlaying(true);
     audio.current.play();
@@ -217,7 +239,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
             }}
           />
         </VolumeControl>
-        <div className="w-[calc(100%+40px)] my-[2em] flex flex-row items-center justify-between">
+        <div className="mt-[7px] flex items-center w-full justify-between text-[#a0a0a0] text-[10px] font-light">
+          <p>{calculateTime(audio.current.currentTime)}</p>
+          <p>
+            {`-${calculateTime(
+              audio.current.duration - audio.current.currentTime
+            )}`}
+          </p>
+        </div>
+        <div className="w-[calc(100%+40px)] my-[1em] sc4:my-[1.5em] flex flex-row items-center justify-between">
           <div className="p-1">
             <ShuffleSvg onClick={() => shuffleMusicList()} />
           </div>
@@ -232,7 +262,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
             )}
             {!musicPlaying && (
               <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
-                <PlaySvg onClick={() => musicStart()} />
+                {!isLoading ? (
+                  <PlaySvg
+                    onClick={() => {
+                      musicStart();
+                    }}
+                  />
+                ) : (
+                  <LoadingSvg />
+                )}
               </div>
             )}
             <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">

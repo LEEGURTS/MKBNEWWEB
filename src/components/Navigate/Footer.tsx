@@ -17,7 +17,7 @@ const Footer: React.FunctionComponent = () => {
         <EmailSvg size="1em" />
       </div>
       <p className="whitespace-pre-line text-[0.4em] mt-3">{`MKB DANCE MUSIC CEO. CHOI MINJI
-E-MAIL chldnd63@naver.com
+E-MAIL mkbdancemusic@naver.com
 Republic of Korea`}</p>
     </motion.footer>
   );

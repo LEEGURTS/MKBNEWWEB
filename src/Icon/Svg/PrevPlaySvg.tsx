@@ -2,7 +2,7 @@ import React from "react";
 
 interface PrevPlaySvgProps {
   isRotate?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const PrevPlaySvg: React.FunctionComponent<PrevPlaySvgProps> = ({

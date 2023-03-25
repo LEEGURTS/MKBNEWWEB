@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Index from "../components/Index/Index";
 import { AnimatePresence } from "framer-motion";
-import First from "../components/Index/First";
+import First2 from "../components/Index/First2";
 
 const IndexPage: React.FunctionComponent = () => {
   const [indexVisible, setIndexVisible] = useState(
@@ -11,11 +11,11 @@ const IndexPage: React.FunctionComponent = () => {
     sessionStorage.setItem("indexVisible", "false");
     setTimeout(() => {
       setIndexVisible(false);
-    }, 4000);
+    }, 6000);
   }, []);
   return (
     <>
-      <AnimatePresence>{indexVisible && <First />}</AnimatePresence>
+      <AnimatePresence>{indexVisible && <First2 />}</AnimatePresence>
       {!indexVisible && <Index />}
     </>
   );

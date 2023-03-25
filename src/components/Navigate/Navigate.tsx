@@ -61,10 +61,11 @@ const Navigate: React.FunctionComponent<NavigateProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           key={"navigate"}
-          className="absolute w-full h-full text-white z-30 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] py-[1em] flex flex-col items-center"
+          className="absolute h-full text-white z-30 left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%] py-[1em] flex flex-col items-center"
           style={{
+            width: "calc(100% + 1px)",
+            height: "calc(100% + 1px)",
             background: "black",
-
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -73,6 +74,9 @@ const Navigate: React.FunctionComponent<NavigateProps> = ({
             <MKBLogoSvg fill="white" />
             <p className="">MKB DANCE MUSIC</p>
             <p className="text-[0.55em]">MUSIC COMPANY</p>
+            {navigateState === NavigateState.WORK && (
+              <p className="mt-[0.5em] font-bold">WORK</p>
+            )}
           </div>
           {renderNavigateState()}
         </motion.div>

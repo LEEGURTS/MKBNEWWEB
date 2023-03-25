@@ -16,9 +16,8 @@ const NavigateWork: React.FunctionComponent<NavigateWorkProps> = ({
       animate={{ opacity: 1 }}
       className="absolute top-[40%] flex flex-col items-center"
     >
-      <p className="absolute -top-[35%] text-[0.8em]">WORK</p>
       <p
-        className="my-[0.75em] cursor-pointer"
+        className="my-[1em] cursor-pointer"
         onClick={() => {
           navigate("/work/moderndance");
           setIsNavVisible(false);
@@ -27,7 +26,7 @@ const NavigateWork: React.FunctionComponent<NavigateWorkProps> = ({
         MODERN DANCE
       </p>
       <p
-        className="my-[0.75em] cursor-pointer"
+        className="my-[1em] cursor-pointer"
         onClick={() => {
           setIsNavVisible(false);
           navigate("/work/koreadance");
@@ -36,7 +35,7 @@ const NavigateWork: React.FunctionComponent<NavigateWorkProps> = ({
         KOREA
       </p>
       <p
-        className="my-[0.75em] cursor-pointer"
+        className="my-[1em] cursor-pointer"
         onClick={() => {
           setIsNavVisible(false);
           navigate("/work/ballet");
