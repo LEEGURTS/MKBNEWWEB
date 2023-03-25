@@ -41,6 +41,8 @@ input[type=range] {
     background-clip: padding-box;
     border: 7px solid rgba(0, 0, 0, 0.0);
     transform: scale(1.5);
+    box-shadow: none;
+
   }
   &::-webkit-slider-runnable-track {
     height: 20px;
