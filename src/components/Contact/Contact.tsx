@@ -61,20 +61,30 @@ export const Contact: React.FunctionComponent = () => {
       setIsModalOpened(true);
       return;
     }
-    emailjs.init("8tUMJD-CWmY4AnxOY");
-    console.log(formData.current);
-    emailjs.send("service_bqvh4mm", "template_cwdxqzd", formData.current).then(
-      (response) => {
-        setModalItem(
-          `메일 전송이 완료되었어요! 조금만 기다려주시면 금방 답장해드릴게요.\n\nEmail sent complete.`
-        );
-        setIsModalOpened(true);
-        setIsMailSended(true);
-      },
-      (error) => {
-        alert(error);
-      }
+    console.log(
+      process.env.REACT_APP_EMAILJS_SERVICE!,
+      process.env.REACT_APP_EMAILJS_TEMPLATE!
     );
+    emailjs.init(process.env.REACT_APP_EMAILJS_INIT!);
+    console.log(formData.current);
+    emailjs
+      .send(
+        process.env.REACT_APP_EMAILJS_SERVICE!,
+        process.env.REACT_APP_EMAILJS_TEMPLATE!,
+        formData.current
+      )
+      .then(
+        (response) => {
+          setModalItem(
+            `메일 전송이 완료되었어요! 조금만 기다려주시면 금방 답장해드릴게요.\n\nEmail sent complete.`
+          );
+          setIsModalOpened(true);
+          setIsMailSended(true);
+        },
+        (error) => {
+          alert(error);
+        }
+      );
   };
 
   const handleFormdata = (
