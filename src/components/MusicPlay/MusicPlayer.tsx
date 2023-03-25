@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from "react";
 import ShuffleSvg from "../../Icon/Svg/ShuffleSvg";
 import PrevPlaySvg from "../../Icon/Svg/PrevPlaySvg";
@@ -42,7 +43,6 @@ input[type=range] {
     border: 7px solid rgba(0, 0, 0, 0.0);
     transform: scale(1.5);
     box-shadow: none;
-
   }
   &::-webkit-slider-runnable-track {
     height: 20px;
@@ -70,17 +70,28 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
 }) => {
   const [musicPlaying, setMusicPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [, setMusicVolume] = useState<number>(1);
+  const [musicVolume, setMusicVolume] = useState<number>(1);
   const intervalRef = useRef<NodeJS.Timer>();
   const [playIdx, setPlayIdx] = useState(customPlayIdx);
   const audio = useRef<HTMLAudioElement>(new Audio());
   const [slideIdx, setSlideIdx] = useState(0);
   const [isLoopState, setIsLoopState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const audioCtx = useRef(new AudioContext());
+  const gainNode = useRef<GainNode>(audioCtx.current.createGain());
+
+  useEffect(() => {
+    let audioSource = audioCtx.current.createMediaElementSource(audio.current);
+    audioSource.connect(gainNode.current);
+    gainNode.current.connect(audioCtx.current.destination);
+    return () => {
+      audioSource.disconnect(gainNode.current);
+      gainNode.current.disconnect(audioCtx.current.destination);
+    };
+  }, []);
   useEffect(() => {
     setPlayIdx(customPlayIdx);
     handlePlayMusic(musicList[customPlayIdx].title).then(() => musicStart());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customPlayIdx]);
 
   const calculateTime = (time: number) => {
@@ -278,6 +289,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
                   <PlaySvg
                     onClick={() => {
                       musicStart();
+                      audioCtx.current.resume();
                     }}
                   />
                 ) : (
@@ -300,7 +312,12 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
           </div>
         </div>
         <div className="w-[calc(100%+40px)] flex flex-row items-center justify-between">
-          <SoundMinSvg />
+          <SoundMinSvg
+            onClick={() => {
+              setMusicVolume(0);
+              gainNode.current.gain.value = 0;
+            }}
+          />
           <VolumeControl>
             <input
               className="w-full"
@@ -308,14 +325,20 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
               min={0}
               max={1}
               step={0.01}
-              value={audio.current.volume}
+              value={musicVolume}
               onChange={(e) => {
-                audio.current.volume = Number(e.target.value);
-                setMusicVolume(Number(e.target.value));
+                gainNode.current.gain.value = e.target.valueAsNumber;
+
+                setMusicVolume(e.target.valueAsNumber);
               }}
             />
           </VolumeControl>
-          <SoundMaxSvg />
+          <SoundMaxSvg
+            onClick={() => {
+              setMusicVolume(1);
+              gainNode.current.gain.value = 1;
+            }}
+          />
         </div>
       </div>
       <WorkExplain
