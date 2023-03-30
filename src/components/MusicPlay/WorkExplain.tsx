@@ -17,7 +17,9 @@ const WorkExplain: React.FunctionComponent<WorkExplainProps> = ({
       </p>
       <div
         className="absolute left-[2em] cursor-pointer"
-        onClick={() => setSlideIdx(0)}
+        onClick={() => {
+          setSlideIdx(0);
+        }}
       >
         {!isMobile && <ArrorNoBarSvg />}
       </div>

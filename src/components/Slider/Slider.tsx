@@ -85,6 +85,7 @@ const Slider: React.FunctionComponent<SliderProps> = ({
         className={
           "relative z-10 flex items-center justify-center " + SwiperClassName
         }
+        nested
         lazy={{
           loadPrevNext: true,
         }}

@@ -32,7 +32,7 @@ const NavigateWork: React.FunctionComponent<NavigateWorkProps> = ({
           navigate("/work/koreadance");
         }}
       >
-        KOREA
+        KOREA TRADITIONAL DANCE
       </p>
       <p
         className="my-[1em] cursor-pointer"

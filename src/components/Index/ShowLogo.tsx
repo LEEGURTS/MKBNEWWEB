@@ -6,7 +6,7 @@ const ShowLogo: React.FunctionComponent = () => {
       className="w-screen h-screen bg-white flex items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 3 }}
+      transition={{ duration: 0.7 }}
     >
       와우!
     </motion.div>

@@ -33,7 +33,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
     switch (titlePath) {
       case "MODERN DANCE":
         return modernDanceList;
-      case "KOREA DANCE":
+      case "KOREA TRADITIONAL DANCE":
         return koreaDanceList;
       case "BALLET":
         return balletList;

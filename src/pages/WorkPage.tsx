@@ -10,7 +10,10 @@ const WorkPage: React.FunctionComponent = () => {
           path="/moderndance"
           element={<Work titlePath="MODERN DANCE" />}
         />
-        <Route path="/koreadance" element={<Work titlePath="KOREA DANCE" />} />
+        <Route
+          path="/koreadance"
+          element={<Work titlePath="KOREA TRADITIONAL DANCE" />}
+        />
         <Route path="/ballet" element={<Work titlePath="BALLET" />} />
       </Routes>
     </Suspense>

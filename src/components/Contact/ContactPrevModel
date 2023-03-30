@@ -59,6 +59,7 @@ export const Contact: React.FunctionComponent = () => {
       return;
     }
     emailjs.init(process.env.REACT_APP_EMAILJS_INIT!);
+    console.log(formData.current);
     emailjs
       .send(
         process.env.REACT_APP_EMAILJS_SERVICE!,
@@ -155,41 +156,12 @@ export const Contact: React.FunctionComponent = () => {
   };
   return (
     <div
-      className="fixed w-screen text-white font-pretendard font-medium overflow-hidden"
+      className="relative text-white font-pretendard font-medium"
       style={{
         height: 100 * vh,
         background: "black",
       }}
     >
-      <div className="flex items-center absolute z-40 left-[50%] -translate-x-[50%] top-[2em]">
-        {Array(11)
-          .fill(0)
-          .map((_, idx) => {
-            if (idx % 2 === 0) {
-              return (
-                <div className="relative flex items-center">
-                  <div
-                    className="w-[1.2em] h-[1.2em] flex items-center justify-center rounded-full duration-300"
-                    style={{
-                      backgroundColor:
-                        idx / 2 - 1 < infoIdx ? "#ffffff" : "#767676",
-                    }}
-                  ></div>
-                </div>
-              );
-            } else {
-              return (
-                <div
-                  className="w-[2em] border duration-300"
-                  style={{
-                    borderColor:
-                      idx / 2 - 1 < infoIdx - 1 ? "#ffffff" : "#767676",
-                  }}
-                ></div>
-              );
-            }
-          })}
-      </div>
       <AlertModal
         content={modalItem}
         isOpened={isModalOpened}
@@ -248,6 +220,16 @@ export const Contact: React.FunctionComponent = () => {
           </motion.button>
         )}
       </AnimatePresence>
+      <div
+        className="absolute z-40 left-[50%] -translate-x-[50%]"
+        style={{
+          top: `calc(${buttonHeight}px - 3.3em)`,
+        }}
+      >
+        {infoIdx + 1}
+        {" / "}
+        {6}
+      </div>
       <AnimatePresence>
         {infoIdx === 5 && (
           <motion.button
@@ -294,11 +276,6 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("phone")}
           placeHolder="Don't write if you aren't korean"
           setNextSlide={handleNext}
-          focusOut={() => {
-            setTimeout(() => {
-              setButtonHeight(visualViewport?.height || 0);
-            }, 200);
-          }}
           type="tel"
         />
         <ContactAskForm
@@ -306,11 +283,6 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("email")}
           placeHolder="Please write your email."
           setNextSlide={handleNext}
-          focusOut={() => {
-            setTimeout(() => {
-              setButtonHeight(visualViewport?.height || 0);
-            }, 200);
-          }}
           type="email"
         />
         <ContactAskForm
@@ -318,11 +290,6 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("majorField")}
           placeHolder="Please write your major field."
           setNextSlide={handleNext}
-          focusOut={() => {
-            setTimeout(() => {
-              setButtonHeight(visualViewport?.height || 0);
-            }, 200);
-          }}
           type="text"
         />
         <ContactAskForm
@@ -330,11 +297,6 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("purpose")}
           placeHolder="Please write your major field."
           setNextSlide={handleNext}
-          focusOut={() => {
-            setTimeout(() => {
-              setButtonHeight(visualViewport?.height || 0);
-            }, 200);
-          }}
           type="text"
         />
         <ContactAskTextarea
@@ -342,11 +304,6 @@ export const Contact: React.FunctionComponent = () => {
           setInput={handleFormdata("detail")}
           placeHolder="Please write anything you want."
           setNextSlide={handleNext}
-          focusOut={() => {
-            setTimeout(() => {
-              setButtonHeight(visualViewport?.height || 0);
-            }, 200);
-          }}
         />
       </Slider>
     </div>

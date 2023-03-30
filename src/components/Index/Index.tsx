@@ -26,7 +26,6 @@ const Index: React.FunctionComponent = () => {
     sessionStorage.setItem(path, JSON.stringify(albumData as musicForm[]));
     return albumData as musicForm[];
   };
-
   useLayoutEffect(() => {
     if (!JSON.parse(sessionStorage.getItem("moderndance") as string)) {
       getFirebaseData("moderndance").then((item) => {
@@ -100,7 +99,7 @@ const Index: React.FunctionComponent = () => {
         </div>
         <div className="flex flex-col items-center whitespace-pre-line text-center leading-[3.5em]">
           {`MODERN DANCE 
-          KOREA DANCE 
+          KOREA TRADITIONAL DANCE 
           BALLET`}
         </div>
       </div>

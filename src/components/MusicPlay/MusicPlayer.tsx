@@ -19,6 +19,7 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
 import LoadingSvg from "../../Icon/Svg/LoadingSvg";
 import AltImage from "../../Icon/Image/Alt.jpg";
+import { isDesktop } from "react-device-detect";
 
 const VolumeControl = styled.div`
 display: flex;
@@ -81,7 +82,21 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const gainNode = useRef<GainNode>(audioCtx.current.createGain());
 
   useEffect(() => {
-    let audioSource = audioCtx.current.createMediaElementSource(audio.current);
+    if (audio.current.paused) {
+      musicPause();
+      setMusicPlaying(false);
+    } else {
+      musicStart();
+      setMusicPlaying(true);
+    }
+  }, [audio.current.paused]);
+
+  useEffect(() => {
+    let audioSource: MediaElementAudioSourceNode;
+    try {
+      audioSource = audioCtx.current.createMediaElementSource(audio.current);
+    } finally {
+    }
     audioSource.connect(gainNode.current);
     gainNode.current.connect(audioCtx.current.destination);
     return () => {
@@ -89,6 +104,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       gainNode.current.disconnect(audioCtx.current.destination);
     };
   }, []);
+
   useEffect(() => {
     setPlayIdx(customPlayIdx);
     handlePlayMusic(musicList[customPlayIdx].title).then(() => musicStart());
@@ -134,10 +150,11 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       setPlayIdx(playIdx - 1);
     }
   };
-
   useEffect(
     () => {
-      handlePlayMusic(musicList[0].title).then(() => musicPause());
+      handlePlayMusic(musicList[0].title).then(() => {
+        musicPause();
+      });
       audio.current.currentTime = 0;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -165,6 +182,9 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   }, []);
 
   const handlePlayMusic = async (musicName: string) => {
+    if (!musicName) {
+      return;
+    }
     const item: Blob | null = await localforage.getItem(musicName);
     if (item) {
       try {
@@ -190,6 +210,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
         audio.current.src = "";
       }
     }
+    return;
   };
 
   const musicStart = () => {
@@ -199,8 +220,6 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
     ) {
       return;
     }
-    console.log(audio.current.src);
-    console.log(window.location.href);
     clearInterval(intervalRef.current);
     setMusicPlaying(true);
     audio.current.play();
@@ -219,17 +238,20 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
     <Slider
       controlIdx={slideIdx}
       setControlIdx={setSlideIdx}
+      infoIdx={slideIdx}
+      setInfoIdx={setSlideIdx}
       SwiperClassName="w-screen h-full"
       SlideClassName="flex items-center justify-center"
       bulletVisible={false}
       mouseScroll={false}
-      isCssMode={true}
+      isCssMode={false}
+      allowTouchMove={!isDesktop}
     >
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
         <img
           alt=""
           src={musicList[playIdx].thumbnail || AltImage}
-          className="w-full"
+          className="w-full aspect-[4/3] object-cover"
         />
         <div className="w-full flex flex-row justify-between items-end mt-[1em]">
           <div className="flex flex-col">
@@ -260,6 +282,9 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
               audio.current.currentTime = Number(e.target.value);
               setCurrentTime(Number(e.target.value));
             }}
+            onTouchMoveCapture={(e) => {
+              e.stopPropagation();
+            }}
           />
         </VolumeControl>
         <div className="mt-[7px] flex items-center w-full justify-between text-[#a0a0a0] text-[10px] font-light">
@@ -288,8 +313,8 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
                 {!isLoading ? (
                   <PlaySvg
                     onClick={() => {
-                      musicStart();
                       audioCtx.current.resume();
+                      musicStart();
                     }}
                   />
                 ) : (
@@ -330,6 +355,9 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
                 gainNode.current.gain.value = e.target.valueAsNumber;
 
                 setMusicVolume(e.target.valueAsNumber);
+              }}
+              onTouchMoveCapture={(e) => {
+                e.stopPropagation();
               }}
             />
           </VolumeControl>

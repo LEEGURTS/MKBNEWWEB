@@ -1,15 +1,24 @@
 import { useState } from "react";
+import { isDesktop } from "react-device-detect";
+import { isTablet } from "react-device-detect";
 
 interface ContactAskTextareaProps {
   askContent: string;
   setInput: (inputData: string) => void;
   placeHolder: string;
   setNextSlide: () => void;
+  focusOut?: () => void;
 }
 
 export const ContactAskTextarea: React.FunctionComponent<
   ContactAskTextareaProps
-> = ({ askContent, setInput, placeHolder, setNextSlide }) => {
+> = ({
+  askContent,
+  setInput,
+  placeHolder,
+  setNextSlide,
+  focusOut = () => {},
+}) => {
   const [text, setText] = useState("");
 
   const handleOnKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -20,7 +29,12 @@ export const ContactAskTextarea: React.FunctionComponent<
 
   return (
     <div className="relative w-full h-full">
-      <div className="relative top-[8%] lg:top-[30%] flex flex-col items-center font-medium">
+      <div
+        className="relative flex flex-col items-center font-medium"
+        style={{
+          top: isDesktop ? (isTablet ? "8%" : "30%") : "8%",
+        }}
+      >
         <div className="flex flex-col items-center">
           <p className="whitespace-pre-line text-center leading-[2em]">
             {askContent}
@@ -37,7 +51,7 @@ export const ContactAskTextarea: React.FunctionComponent<
             if (text === "숨겨진히든암호") {
               setText("");
             }
-            console.log(text);
+            focusOut();
           }}
           onFocus={() => {
             if (!text) {
