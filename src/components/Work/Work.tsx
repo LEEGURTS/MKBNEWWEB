@@ -27,6 +27,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
     JSON.parse(sessionStorage.getItem("personalwork") as string),
   ];
   const [playIdx, setPlayIdx] = useState(0);
+  const [isScreenTouched, setIsScreenTouched] = useState(false);
   const [playerPos, setPlayerPos] = useState(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const musicDataList = useMemo(() => {
@@ -71,15 +72,25 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   useEffect(() => {
     let touchStart = 0;
     let touchMove = 0;
+    let isFin = false;
+
     const handleTouchStart = (e: TouchEvent) => {
+      isFin = false;
+      e.preventDefault();
       touchStart = e.touches[0].pageY;
     };
+
     const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      if (isFin) {
+        return;
+      }
       touchMove = e.touches[0].pageY - touchStart;
       setPlayerPos(e.touches[0].pageY - 3 * vh);
     };
 
     const handleTouchEnd = () => {
+      isFin = true;
       if (touchMove > 50) {
         setWorkState(WorkState.MUSICLIST);
       } else if (touchMove < -50) {
@@ -89,15 +100,23 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
       }
     };
 
+    const throttleDrag = throttle((e: TouchEvent) => handleTouchMove(e), 100);
+
+    const removeBounce = () => {
+      setIsScreenTouched(true);
+      document.removeEventListener("touchstart", removeBounce);
+    };
     scrollRef.current?.addEventListener("touchstart", handleTouchStart);
-    scrollRef.current?.addEventListener("touchmove", handleTouchMove);
+    scrollRef.current?.addEventListener("touchmove", throttleDrag);
     scrollRef.current?.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("touchstart", removeBounce);
     return () => {
       scrollRef.current?.removeEventListener("touchstart", handleTouchStart);
-      scrollRef.current?.removeEventListener("touchmove", handleTouchMove);
+      scrollRef.current?.removeEventListener("touchmove", throttleDrag);
       scrollRef.current?.removeEventListener("touchend", handleTouchEnd);
     };
   }, [workState]);
+
   return (
     <div
       className="relative w-full"
@@ -110,12 +129,27 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         style={{
           height: 100 * vh,
         }}
-        transition={{}}
-        initial={{ opacity: 0 }}
-        animate={{
-          y: playerPos,
-          opacity: 1,
-        }}
+        transition={
+          isScreenTouched
+            ? {}
+            : {
+                duration: 0.7,
+                repeat: Infinity,
+                ease: "easeOut",
+                repeatType: "reverse",
+              }
+        }
+        animate={
+          isScreenTouched
+            ? {
+                y: playerPos,
+                opacity: 1,
+              }
+            : {
+                y: `${10 * vh}px`,
+                opacity: 1,
+              }
+        }
       >
         <Navigate isLogoVisible={false} />
         {isMobile && (

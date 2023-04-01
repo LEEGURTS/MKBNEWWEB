@@ -167,9 +167,9 @@ export const Contact: React.FunctionComponent = () => {
           .map((_, idx) => {
             if (idx % 2 === 0) {
               return (
-                <div className="relative flex items-center">
+                <div key={idx} className="relative flex items-center">
                   <div
-                    className="w-[1.2em] h-[1.2em] flex items-center justify-center rounded-full duration-300"
+                    className="w-[10px] sc3:w-[12px] sc4:w-[14px] md:w-[16px] lg:w-[1.2em] h-[10px] sc3:h-[12px] sc4:h-[14px] md:h-[16px] lg:h-[1.2em] flex items-center justify-center rounded-full duration-300"
                     style={{
                       backgroundColor:
                         idx / 2 - 1 < infoIdx ? "#ffffff" : "#767676",
@@ -180,7 +180,8 @@ export const Contact: React.FunctionComponent = () => {
             } else {
               return (
                 <div
-                  className="w-[2em] border duration-300"
+                  key={idx}
+                  className="w-[7px] sc3:w-[12px] sc4:w-[10px] md:w-[12px] lg:w-[1.5em] border duration-300"
                   style={{
                     borderColor:
                       idx / 2 - 1 < infoIdx - 1 ? "#ffffff" : "#767676",
