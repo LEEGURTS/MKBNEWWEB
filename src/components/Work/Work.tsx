@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { throttle } from "lodash";
 import { isMobile } from "react-device-detect";
+import ArrorNoBarSvg from "./../../Icon/Svg/ArrorNoBarSvg";
 
 interface WorkProps {
   titlePath: string;
@@ -55,6 +56,9 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   }, [workState]);
 
   useEffect(() => {
+    if (localStorage.getItem("isScreenTouched")) {
+      setIsScreenTouched(true);
+    }
     const handleScroll = (e: WheelEvent) => {
       e.preventDefault();
       if (e.deltaY < 0) {
@@ -104,12 +108,15 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
 
     const removeBounce = () => {
       setIsScreenTouched(true);
+      localStorage.setItem("isScreenTouched", "true");
       document.removeEventListener("touchstart", removeBounce);
     };
     scrollRef.current?.addEventListener("touchstart", handleTouchStart);
     scrollRef.current?.addEventListener("touchmove", throttleDrag);
     scrollRef.current?.addEventListener("touchend", handleTouchEnd);
-    document.addEventListener("touchstart", removeBounce);
+    if (!localStorage.getItem("isScreenTouched")) {
+      document.addEventListener("touchstart", removeBounce);
+    }
     return () => {
       scrollRef.current?.removeEventListener("touchstart", handleTouchStart);
       scrollRef.current?.removeEventListener("touchmove", throttleDrag);
@@ -188,6 +195,12 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
+        {!isScreenTouched && (
+          <div className="relative flex flex-col items-center">
+            <ArrorNoBarSvg rotate={270} className="relative top-[40px]" />
+            <ArrorNoBarSvg rotate={270} className="relative top-[20px]" />
+          </div>
+        )}
         <div className="relative flex flex-col items-center top-[10%]">
           <MKBLogoSvg width="2.5em" height="2.5em" />
           <p className="mt-[2em] text-[0.8em] mb-[1em]">

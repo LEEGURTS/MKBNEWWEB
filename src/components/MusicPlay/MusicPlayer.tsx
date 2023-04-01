@@ -18,7 +18,8 @@ import localforage from "localforage";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
 import LoadingSvg from "../../Icon/Svg/LoadingSvg";
-import AltImage from "../../Icon/Image/Alt.jpg";
+import Alt1 from "../../Icon/Image/Alt1.png";
+import Alt2 from "../../Icon/Image/Alt2.png";
 import { isDesktop } from "react-device-detect";
 
 const VolumeControl = styled.div`
@@ -80,7 +81,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const audioCtx = useRef(new AudioContext());
   const gainNode = useRef<GainNode>(audioCtx.current.createGain());
-
+  const alt = [Alt1, Alt2];
   useEffect(() => {
     if (audio.current.paused) {
       musicPause();
@@ -250,7 +251,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
         <img
           alt=""
-          src={musicList[playIdx].thumbnail || AltImage}
+          src={musicList[playIdx].thumbnail || alt[Math.round(Math.random())]}
           className="w-full aspect-[4/3] object-cover"
         />
         <div className="w-full flex flex-row justify-between items-end mt-[1em]">
