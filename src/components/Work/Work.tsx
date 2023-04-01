@@ -197,8 +197,8 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
       >
         {!isScreenTouched && (
           <div className="relative flex flex-col items-center">
-            <ArrorNoBarSvg rotate={270} className="relative top-[40px]" />
-            <ArrorNoBarSvg rotate={270} className="relative top-[20px]" />
+            <ArrorNoBarSvg rotate={270} className="relative top-[10px]" />
+            <ArrorNoBarSvg rotate={270} className="relative top-[-10px]" />
           </div>
         )}
         <div className="relative flex flex-col items-center top-[10%]">
