@@ -22,7 +22,12 @@ const Navigate: React.FunctionComponent<NavigateProps> = ({
   const renderNavigateState = () => {
     switch (navigateState) {
       case NavigateState.NONE:
-        return <NavigateNone setNavigateState={setNavigateState} />;
+        return (
+          <NavigateNone
+            setNavigateState={setNavigateState}
+            setIsNavVisible={setIsNavVisible}
+          />
+        );
       case NavigateState.WORK:
         return <NavigateWork setIsNavVisible={setIsNavVisible} />;
     }

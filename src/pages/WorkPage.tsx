@@ -15,6 +15,7 @@ const WorkPage: React.FunctionComponent = () => {
           element={<Work titlePath="KOREA TRADITIONAL DANCE" />}
         />
         <Route path="/ballet" element={<Work titlePath="BALLET" />} />
+        <Route path="/personal" element={<Work titlePath="PERSONAL WORK" />} />
       </Routes>
     </Suspense>
   );

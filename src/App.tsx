@@ -4,7 +4,6 @@ import { lazy, Suspense } from "react";
 function App() {
   const WorkPage = lazy(() => import("./pages/WorkPage"));
   const AboutMKBPage = lazy(() => import("./pages/AboutMKBPage"));
-  const PersonalWorkPage = lazy(() => import("./pages/PersonalWorkPage"));
   const ContactPage = lazy(() => import("./pages/ContactPage"));
   const WorkProcessPage = lazy(() => import("./pages/WorkProcessPage"));
 
@@ -15,7 +14,6 @@ function App() {
           <Route element={<IndexPage />} path="/" />
           <Route element={<WorkPage />} path="/work/*" />
           <Route element={<AboutMKBPage />} path="/aboutmkb" />
-          <Route element={<PersonalWorkPage />} path="/personalwork" />
           <Route element={<ContactPage />} path="/contact" />
           <Route element={<WorkProcessPage />} path="/workprocess" />
         </Routes>

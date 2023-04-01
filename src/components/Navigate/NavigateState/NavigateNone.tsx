@@ -4,10 +4,12 @@ import { NavigateState } from "./NAVIGATESTATE";
 
 interface NavigateNoneProps {
   setNavigateState: React.Dispatch<React.SetStateAction<NavigateState>>;
+  setIsNavVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
   setNavigateState,
+  setIsNavVisible,
 }) => {
   const navigate = useNavigate();
   return (
@@ -22,25 +24,37 @@ const NavigateNone: React.FunctionComponent<NavigateNoneProps> = ({
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/personalwork")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/work/personal");
+        }}
       >
         PERSONAL WOLK
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/aboutmkb")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/aboutmkb");
+        }}
       >
         ABOUT MKB
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/workprocess")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/workprocess");
+        }}
       >
         WORK PROCESS
       </p>
       <p
         className="my-[0.75em] cursor-pointer"
-        onClick={() => navigate("/contact")}
+        onClick={() => {
+          setIsNavVisible(false);
+          navigate("/contact");
+        }}
       >
         CONTACT
       </p>
