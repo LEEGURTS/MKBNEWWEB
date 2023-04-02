@@ -82,6 +82,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const audioCtx = useRef(new AudioContext());
   const gainNode = useRef<GainNode>(audioCtx.current.createGain());
   const alt = [Alt1, Alt2];
+
   useEffect(() => {
     if (audio.current.paused) {
       musicPause();
@@ -128,18 +129,19 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
     });
   };
 
-  const increasePlayIdx = () => {
+  const increasePlayIdx = async () => {
     musicPause();
     if (playIdx === musicList.length - 1) {
-      handlePlayMusic(musicList[0].title).then(() => musicStart());
+      await handlePlayMusic(musicList[0].title);
       setPlayIdx(0);
     } else {
-      handlePlayMusic(musicList[playIdx + 1].title).then(() => musicStart());
+      await handlePlayMusic(musicList[playIdx + 1].title);
       setPlayIdx(playIdx + 1);
     }
+    musicStart();
   };
 
-  const decreasePlayIdx = () => {
+  const decreasePlayIdx = async () => {
     musicPause();
     if (playIdx === 0) {
       handlePlayMusic(musicList[musicList.length - 1].title).then(() =>
@@ -153,6 +155,9 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   };
   useEffect(
     () => {
+      if (!musicList) {
+        return;
+      }
       handlePlayMusic(musicList[0].title).then(() => {
         musicPause();
       });
@@ -251,7 +256,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
         <img
           alt=""
-          src={musicList[playIdx].thumbnail || alt[Math.round(Math.random())]}
+          src={musicList[playIdx].thumbnail ?? alt[Math.round(Math.random())]}
           className="w-full aspect-[4/3] object-cover"
         />
         <div className="w-full flex flex-row justify-between items-end mt-[1em]">
