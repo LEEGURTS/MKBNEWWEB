@@ -108,6 +108,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   }, []);
 
   useEffect(() => {
+    musicPause();
     setPlayIdx(0);
     setCustomPlayIdx(0);
   }, [musicType]);
