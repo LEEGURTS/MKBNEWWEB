@@ -18,7 +18,6 @@ import localforage from "localforage";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../Firebase";
 import LoadingSvg from "../../Icon/Svg/LoadingSvg";
-import Alt1 from "../../Icon/Image/Alt1.png";
 import Alt2 from "../../Icon/Image/Alt2.png";
 import { isDesktop } from "react-device-detect";
 
@@ -57,6 +56,7 @@ input[type=range] {
 `;
 interface MusicPlayerProps {
   setWorkState: React.Dispatch<React.SetStateAction<WorkState>>;
+  setCustomPlayIdx?: React.Dispatch<React.SetStateAction<number>>;
   musicListVisible?: boolean;
   musicList: musicForm[];
   customPlayIdx?: number;
@@ -65,6 +65,7 @@ interface MusicPlayerProps {
 
 const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   setWorkState,
+  setCustomPlayIdx = () => {},
   musicListVisible = true,
   musicList,
   customPlayIdx = 0,
@@ -81,7 +82,6 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const audioCtx = useRef(new AudioContext());
   const gainNode = useRef<GainNode>(audioCtx.current.createGain());
-  const alt = [Alt1, Alt2];
 
   useEffect(() => {
     if (audio.current.paused) {
@@ -108,8 +108,13 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   }, []);
 
   useEffect(() => {
+    setPlayIdx(0);
+    setCustomPlayIdx(0);
+  }, [musicType]);
+
+  useEffect(() => {
     setPlayIdx(customPlayIdx);
-    handlePlayMusic(musicList[customPlayIdx].title).then(() => musicStart());
+    handlePlayMusic(musicList[customPlayIdx]?.title).then(() => musicStart());
   }, [customPlayIdx]);
 
   const calculateTime = (time: number) => {
@@ -124,32 +129,31 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
   const shuffleMusicList = () => {
     musicList.sort(() => Math.random() - 0.5);
     setPlayIdx(0);
-    handlePlayMusic(musicList[0].title).then(() => {
+    handlePlayMusic(musicList[0]?.title).then(() => {
       musicStart();
     });
   };
 
-  const increasePlayIdx = async () => {
+  const increasePlayIdx = () => {
     musicPause();
     if (playIdx === musicList.length - 1) {
-      await handlePlayMusic(musicList[0].title);
+      handlePlayMusic(musicList[0]?.title).then(() => musicStart());
       setPlayIdx(0);
     } else {
-      await handlePlayMusic(musicList[playIdx + 1].title);
+      handlePlayMusic(musicList[playIdx + 1]?.title).then(() => musicStart());
       setPlayIdx(playIdx + 1);
     }
-    musicStart();
   };
 
-  const decreasePlayIdx = async () => {
+  const decreasePlayIdx = () => {
     musicPause();
     if (playIdx === 0) {
-      handlePlayMusic(musicList[musicList.length - 1].title).then(() =>
+      handlePlayMusic(musicList[musicList.length - 1]?.title).then(() =>
         musicStart()
       );
       setPlayIdx(musicList.length - 1);
     } else {
-      handlePlayMusic(musicList[playIdx - 1].title).then(() => musicStart());
+      handlePlayMusic(musicList[playIdx - 1]?.title).then(() => musicStart());
       setPlayIdx(playIdx - 1);
     }
   };
@@ -158,7 +162,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       if (!musicList) {
         return;
       }
-      handlePlayMusic(musicList[0].title).then(() => {
+      handlePlayMusic(musicList[0]?.title).then(() => {
         musicPause();
       });
       audio.current.currentTime = 0;
@@ -200,20 +204,22 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       }
     } else {
       try {
+        setIsLoading(true);
         const attachmentRef = ref(storage, `/${musicName}.mp3`);
         const url = await getDownloadURL(attachmentRef);
         const handleFetch = async () => {
-          setIsLoading(true);
           const res = await fetch(url);
-          setIsLoading(false);
+
           return res;
         };
         const res = await handleFetch();
         const blob = await res.blob();
         localforage.setItem(musicName, blob);
+        setIsLoading(false);
         audio.current.src = (webkitURL || URL).createObjectURL(blob);
       } catch {
         audio.current.src = "";
+        setIsLoading(false);
       }
     }
     return;
@@ -256,12 +262,12 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       <div className="flex flex-col items-center w-[60vw] lg:w-[35vw]">
         <img
           alt=""
-          src={musicList[playIdx].thumbnail ?? alt[Math.round(Math.random())]}
+          src={musicList[playIdx]?.thumbnail || Alt2}
           className="w-full aspect-[4/3] object-cover"
         />
         <div className="w-full flex flex-row justify-between items-end mt-[1em]">
           <div className="flex flex-col">
-            <p className="text-[0.6em]">{musicList[playIdx].title}</p>
+            <p className="text-[0.6em]">{musicList[playIdx]?.title}</p>
             <p className="text-[0.4em] text-[#4a4a4a]">MKB DANCE MUSIC</p>
           </div>
 
@@ -307,12 +313,25 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
           </div>
           <div className="flex items-center w-[40%] lg:w-[30%] justify-between">
             <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
-              <PrevPlaySvg onClick={() => decreasePlayIdx()} />
+              {!isLoading && (
+                <PrevPlaySvg
+                  onClick={() => {
+                    audioCtx.current.resume();
+                    decreasePlayIdx();
+                  }}
+                />
+              )}
             </div>
             {musicPlaying && (
-              <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
-                <PauseSvg onClick={() => musicPause()} />
-              </div>
+              <>
+                {!isLoading ? (
+                  <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
+                    <PauseSvg onClick={() => musicPause()} />
+                  </div>
+                ) : (
+                  <LoadingSvg />
+                )}
+              </>
             )}
             {!musicPlaying && (
               <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
@@ -329,7 +348,15 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
               </div>
             )}
             <div className="rounded-full p-2 cursor-pointer hover:shadow-3xl hover:bg-[#e8e8e8] duration-300">
-              <PrevPlaySvg isRotate={true} onClick={() => increasePlayIdx()} />
+              {!isLoading && (
+                <PrevPlaySvg
+                  isRotate={true}
+                  onClick={() => {
+                    audioCtx.current.resume();
+                    increasePlayIdx();
+                  }}
+                />
+              )}
             </div>
           </div>
           <div
@@ -377,7 +404,7 @@ const MusicPlayer: React.FunctionComponent<MusicPlayerProps> = ({
       </div>
       <WorkExplain
         setSlideIdx={setSlideIdx}
-        explainContent={musicList[playIdx].explain}
+        explainContent={musicList[playIdx]?.explain}
       />
     </Slider>
   );

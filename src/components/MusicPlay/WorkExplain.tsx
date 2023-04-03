@@ -13,7 +13,7 @@ const WorkExplain: React.FunctionComponent<WorkExplainProps> = ({
   return (
     <div className="relative w-full">
       <p className="absolute text-[0.6em] w-[60%] left-[20%] h-full flex items-center justify-center whitespace-pre-line text-center">
-        {explainContent.split(`!점프`).map((text) => `\n` + text)}
+        {explainContent?.split(`!점프`).map((text) => `\n` + text)}
       </p>
       <div
         className="absolute left-[2em] cursor-pointer"

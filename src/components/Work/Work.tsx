@@ -126,7 +126,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
 
   return (
     <div
-      className="relative w-full"
+      className="relative w-full overflow-y-scroll"
       style={{
         height: `${100 * vh}px`,
       }}
@@ -180,6 +180,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
               animate={{ opacity: 1 }}
             >
               <MusicPlayer
+                setCustomPlayIdx={setPlayIdx}
                 customPlayIdx={playIdx}
                 musicList={musicDataList}
                 setWorkState={setWorkState}
@@ -203,7 +204,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
         )}
         <div className="relative flex flex-col items-center top-[10%]">
           <MKBLogoSvg width="2.5em" height="2.5em" />
-          <p className="mt-[2em] text-[0.8em] mb-[1em]">
+          <p className="mt-[2em] text-[0.8em] mb-[1em] text-center">
             {titlePath +
               (workState === WorkState.MUSICLIST ? " MUSIC WORK" : "")}
           </p>
