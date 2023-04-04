@@ -11,7 +11,7 @@ import Navigate from "../Navigate/Navigate";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { throttle } from "lodash";
-import { isMobile } from "react-device-detect";
+import { isDesktop, isMobile } from "react-device-detect";
 import ArrorNoBarSvg from "./../../Icon/Svg/ArrorNoBarSvg";
 
 interface WorkProps {
@@ -56,7 +56,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   }, [workState]);
 
   useEffect(() => {
-    if (localStorage.getItem("isScreenTouched")) {
+    if (isDesktop || sessionStorage.getItem("isScreenTouched")) {
       setIsScreenTouched(true);
     }
     const handleScroll = (e: WheelEvent) => {
@@ -108,13 +108,13 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
 
     const removeBounce = () => {
       setIsScreenTouched(true);
-      localStorage.setItem("isScreenTouched", "true");
+      sessionStorage.setItem("isScreenTouched", "true");
       document.removeEventListener("touchstart", removeBounce);
     };
     scrollRef.current?.addEventListener("touchstart", handleTouchStart);
     scrollRef.current?.addEventListener("touchmove", throttleDrag);
     scrollRef.current?.addEventListener("touchend", handleTouchEnd);
-    if (!localStorage.getItem("isScreenTouched")) {
+    if (!isDesktop && !sessionStorage.getItem("isScreenTouched")) {
       document.addEventListener("touchstart", removeBounce);
     }
     return () => {
