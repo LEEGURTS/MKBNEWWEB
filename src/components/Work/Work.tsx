@@ -11,8 +11,8 @@ import Navigate from "../Navigate/Navigate";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { throttle } from "lodash";
-import { isDesktop, isMobile } from "react-device-detect";
 import ArrorNoBarSvg from "./../../Icon/Svg/ArrorNoBarSvg";
+import isMobile from "./../Function/isMobile/isMobile";
 
 interface WorkProps {
   titlePath: string;
@@ -56,7 +56,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
   }, [workState]);
 
   useEffect(() => {
-    if (isDesktop || sessionStorage.getItem("isScreenTouched")) {
+    if (!isMobile || sessionStorage.getItem("isScreenTouched")) {
       setIsScreenTouched(true);
     }
     const handleScroll = (e: WheelEvent) => {
@@ -114,7 +114,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
     scrollRef.current?.addEventListener("touchstart", handleTouchStart);
     scrollRef.current?.addEventListener("touchmove", throttleDrag);
     scrollRef.current?.addEventListener("touchend", handleTouchEnd);
-    if (!isDesktop && !sessionStorage.getItem("isScreenTouched")) {
+    if (isMobile && !sessionStorage.getItem("isScreenTouched")) {
       document.addEventListener("touchstart", removeBounce);
     }
     return () => {
@@ -153,7 +153,7 @@ const Work: React.FunctionComponent<WorkProps> = ({ titlePath }) => {
                 opacity: 1,
               }
             : {
-                y: `${10 * vh}px`,
+                y: `100px`,
                 opacity: 1,
               }
         }
