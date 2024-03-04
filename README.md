@@ -88,8 +88,59 @@ C:\Users\사용자명\AppData\Local\Google\Chrome\User Data\Default\Cache\Cache_
 #### 1. 연락내용을 음악가에게 어떻게 제공하지?
 라이브러리 중 emailJS가 있다. 이는 라이브러리 형태로 편하게 이메일을 전송할 수 있는 형태로 정해진 포멧에 맞추어 객체를 제공하면 키값을 통해 메일을 전송한다.
 - [emailJS를 활용한 코드](https://github.com/LEEGURTS/MKBNEWWEB/blob/master/src/components/Contact/Contact.tsx#L53)
+
+#### 2. 모바일 환경에서도 편하게 쓰고 싶다.
+![image](https://github.com/LEEGURTS/MKBNEWWEB/assets/79559361/4e857618-462d-4cc2-ab31-19390946ff45)
+
+모바일 환경에서는 아래와 같이 다음 버튼이 존재한다. 근데 키보드가 움직이면? 이 또한 같이 움직여야 사용자 경험을 더 좋게 만들 수 있다. 안움직이면 키보드에 가려 누를수가 없다.
+![image](https://github.com/LEEGURTS/MKBNEWWEB/assets/79559361/41dce016-5031-439e-a7c4-af379a83c937)
+
+
+```typescript 
+  const iskeyboardOpened = useDetectKeyboardOpen();
+  useLayoutEffect(() => {
+    setButtonHeight(visualViewport?.height || 0);
+  }, [iskeyboardOpened]);
+```
+
+키보드가 열렸는지 확인해 버튼의 적절한 높이값을 구한다.
+```tsx
+  <motion.button
+            className="absolute z-40 rounded-[10px] py-2 px-4 text-black "
+            style={{
+              background: "white",
+              top: `calc(${buttonHeight}px - 3.3em)`,
+              left: "1em",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleBefore}
+          >
+        <ArrowRightSvg isLeft={true} />
+   </motion.button>
+```
+해당 높이값을 이용해 버튼의 높이를 정해준다.
 </div>
 </details>
-<details>
-<summary><b>MKB DANCE MUSIC에 관한 정보 제공</b></summary>
-</details>
+
+# 한계점
+- OS의 정책, 크롬의 정책등 개발의 직접적인 요소를 잘 알지 못해 소요된 시간이 많다.
+- FE의 숙련도 문제로 코드의 구조가 난잡하다. 추후 리팩토링을 통해 개선할 점이 많다.
+
+# 좀 더 발전시키고 싶은 것
+해당 포맷을 웹 개발에 대한 지식이 없는 사람들이 사용해 본인만의 음악 포트폴리오를 만들수 있게 한다면 좋을 것 같다.
+
+# 사용기술
+### Front-End
+<div>
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+  <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/tailwindcss-F7DF1E?style=for-the-badge&logo=tailwindcss&logoColor=white">
+</div>
+
+### Back-End
+<div>
+  <img src="https://img.shields.io/badge/Netlify-purple?style=for-the-badge&logo=Netlify&logoColor=white">
+  <img src="https://img.shields.io/badge/Firebase-yellow?style=for-the-badge&logo=firebase&logoColor=white">
+</div>
